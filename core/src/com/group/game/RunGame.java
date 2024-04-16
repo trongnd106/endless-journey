@@ -11,8 +11,6 @@ public class RunGame extends Game {
 	public static final float HEIGHT = 208;
 	public static final float RSF = 100;   // resize fit
 	public SpriteBatch batch;
-	private Texture img;
-	
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
@@ -27,6 +25,5 @@ public class RunGame extends Game {
 	@Override
 	public void dispose () {
 		batch.dispose();
-		img.dispose();
 	}
 }
