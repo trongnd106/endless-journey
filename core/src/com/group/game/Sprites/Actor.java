@@ -11,12 +11,12 @@ public class Actor extends Sprite {
     public Body body;
     private TextureRegion stand;
     public Actor(World world, PlayScreen screen){
-        super(screen.getAtlas().findRegion("little_mario"));
+        super(screen.getAtlas().findRegion("deathcap"));
         this.world = world;
         buildActor();
         // chưa tính được tọa độ x,y để lắp vào
-        stand = new TextureRegion(getTexture(),0,10,16,16);
-        setBounds(0,10,16/RunGame.RSF, 16/RunGame.RSF);
+        stand = new TextureRegion(getTexture(),338,110,16,16);
+        setBounds(338,110,16/RunGame.RSF, 16/RunGame.RSF);
         setRegion(stand);
     }
     private void buildActor(){
