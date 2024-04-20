@@ -8,7 +8,7 @@ import com.group.game.Screens.PlayScreen;
 
 public class RunGame extends Game {
 	public static final float WIDTH = 400;
-	public static final float HEIGHT = 208;
+	public static final float HEIGHT = 240;
 	public static final float RSF = 100;   // resize fit
 	public SpriteBatch batch;
 	@Override

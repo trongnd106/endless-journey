@@ -67,7 +67,7 @@ public class PlayScreen implements Screen {
     public void handleInput(float dt){
         // tạm thời khi chưa có sprite chính
         if(Gdx.input.isTouched()){
-            gameCam.position.x += 100*dt;
+            gameCam.position.x += 50*dt;
         }
     }
 
