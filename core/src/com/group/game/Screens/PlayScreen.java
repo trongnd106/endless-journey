@@ -1,6 +1,5 @@
 package com.group.game.Screens;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -20,6 +19,9 @@ import com.group.game.RunGame;
 import com.group.game.Scenes.Hud;
 import com.group.game.Sprites.Actor;
 import com.group.game.Tools.B2WorldCreator;
+import com.group.game.Tools.WorldContactListener;
+import com.group.game.enemies.Deathcap;
+import com.group.game.enemies.Enemy;
 
 public class PlayScreen implements Screen {
     private RunGame game;
@@ -49,7 +51,7 @@ public class PlayScreen implements Screen {
         map = loader.load("map.tmx");
         renderer = new OrthogonalTiledMapRenderer(map, 1 / game.RSF);
 
-        gameCam.position.set(gamePort.getWorldWidth()/2, gamePort.getWorldHeight()/2, 0);
+        gameCam.position.set(game.WIDTH/2/game.RSF, game.HEIGHT/2/game.RSF, 0);
 
         world = new World(new Vector2(0, -10), true);
         // tao actor sau khi co world -> tranh dao thu tu code gay loi
@@ -57,6 +59,8 @@ public class PlayScreen implements Screen {
         b2dr = new Box2DDebugRenderer();
 
         b2wc = new B2WorldCreator(this);
+
+        world.setContactListener(new WorldContactListener());
     }
     @Override
     public void show() {
@@ -70,6 +74,12 @@ public class PlayScreen implements Screen {
         actor.update(dt);
         gameCam.position.x = actor.body.getPosition().x;
 
+        for(Enemy enemy: b2wc.getEnemies()){
+            enemy.update(dt);
+            if (enemy.getX() < actor.getX() + 14 * 16 / RunGame.RSF) {
+                enemy.b2body.setActive(true);//wake up
+            }
+        }
         gameCam.update();
 
         renderer.setView(gameCam);
@@ -79,10 +89,10 @@ public class PlayScreen implements Screen {
         if(Gdx.input.isKeyJustPressed(Input.Keys.UP))
             actor.body.applyLinearImpulse(new Vector2(0,3f), actor.body.getWorldCenter(), true);
 
-        if(Gdx.input.isKeyJustPressed(Input.Keys.RIGHT) && actor.body.getLinearVelocity().x <= 2)
+        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT) && actor.body.getLinearVelocity().x <= 2)
             actor.body.applyLinearImpulse(new Vector2(0.1f, 0), actor.body.getWorldCenter(), true);
 
-        if(Gdx.input.isKeyJustPressed(Input.Keys.LEFT) && actor.body.getLinearVelocity().x >= -2)
+        if(Gdx.input.isKeyPressed(Input.Keys.LEFT) && actor.body.getLinearVelocity().x >= -2)
             actor.body.applyLinearImpulse(new Vector2(-0.1f, 0), actor.body.getWorldCenter(), true);
     }
 
@@ -106,6 +116,9 @@ public class PlayScreen implements Screen {
         game.batch.setProjectionMatrix(gameCam.combined);
         game.batch.begin();
         actor.draw(game.batch);
+        for(Enemy enemy:b2wc.getEnemies()){
+            enemy.draw(game.batch);
+        }
         game.batch.end();
 
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
