@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.*;
 import com.group.game.RunGame;
 import com.group.game.Screens.PlayScreen;
+import com.group.game.enemies.Enemy;
 
 public class Actor extends Sprite {
     private World world;
@@ -29,11 +30,17 @@ public class Actor extends Sprite {
         CircleShape shape = new CircleShape();
         shape.setRadius(6/RunGame.RSF);
         fdf.shape = shape;
+        fdf.filter.categoryBits=RunGame.ACTOR_BIT;//vat the
+        fdf.filter.maskBits=RunGame.GROUND_BIT |RunGame.BRICK_BIT|RunGame.COIN_BIT
+                |RunGame.OBJECT_BIT|RunGame.ENEMY_BIT|RunGame.ENEMY_HEAD_BIT|RunGame.ITEM_BIT;//cac vat the co the va cham
 
-        body.createFixture(fdf);
+        body.createFixture(fdf).setUserData(this);
     }
 
     public void update(float dt){
         setPosition(body.getPosition().x - getWidth()/2, body.getPosition().y - getHeight()/2);
+    }
+    public void hit(Enemy enemy){
+
     }
 }
