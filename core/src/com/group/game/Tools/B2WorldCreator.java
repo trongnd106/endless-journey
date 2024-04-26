@@ -87,7 +87,7 @@ public class B2WorldCreator {
             deathcaps.add(new Deathcap(screen,rect.getX()/RunGame.RSF,rect.getY()/RunGame.RSF));
         }
         turtles=new Array<Turtle>();
-        for(MapObject object:map.getLayers().get(6).getObjects().getByType(RectangleMapObject.class)){
+        for(MapObject object:map.getLayers().get(7).getObjects().getByType(RectangleMapObject.class)){
             Rectangle rect=((RectangleMapObject)object).getRectangle();
             turtles.add(new Turtle(screen,rect.getX()/RunGame.RSF,rect.getY()/RunGame.RSF));
         }

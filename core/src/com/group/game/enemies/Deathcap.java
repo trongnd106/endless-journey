@@ -27,7 +27,7 @@ public class Deathcap extends Enemy{
     public Deathcap(PlayScreen screen, float x, float y) {
         super(screen, x, y);
         frames=new Array<TextureRegion>();
-        for(int i=3;i<6;i++){
+        for(int i=4;i<6;i++){
             frames.add(new TextureRegion(screen.getAtlas().findRegion("deathcap"),16*i,0,16,16));
         }
         walkAnimation=new Animation(0.2f,frames);
@@ -36,8 +36,7 @@ public class Deathcap extends Enemy{
             frames.add(new TextureRegion(screen.getAtlas().findRegion("deathcap"),16*i,0,16,16));
         }
         smashAnimation=new Animation(0.2f,frames);
-        currentState=previousState=State.SMASH
-        ;
+        currentState=previousState=State.SMASH;
         setBounds(getX(),getY(),16/ RunGame.RSF,16/RunGame.RSF);
     }
 
@@ -90,7 +89,7 @@ public class Deathcap extends Enemy{
             region.flip(true,false);
         }
         else if(velocity.x<0&&region.isFlipX()==true){
-            region.flip(true,false);
+            region.flip(false,false);
         }
         stateTime=currentState==previousState?stateTime+dt:0;
         previousState=currentState;
