@@ -1,23 +1,53 @@
 package com.group.game.Sprites;
 
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.utils.Array;
 import com.group.game.RunGame;
 import com.group.game.Screens.PlayScreen;
 import com.group.game.enemies.Enemy;
 import com.group.game.enemies.Turtle;
 
 public class Actor extends Sprite {
+    public enum State {STANDING, JUMPING, RUNNING, FALLING, DEATH}
+    public State currState;
+    public State prevState;
+    private Animation aRun;
+    private TextureRegion aDead;
+    private Animation aJump;
+    private TextureRegion aStand;
+    private boolean getRight;
+    private float timeofState;
+
     private World world;
     public Body body;
     private TextureRegion stand;
     public Actor(World world, PlayScreen screen){
         super(screen.getAtlas().findRegion("deathcap"));
         this.world = world;
+        currState = State.STANDING;
+        prevState = State.STANDING;
+        timeofState = 0;
+        getRight = true;
+
+        Array<TextureRegion> ani = new Array<TextureRegion>();
+        for(int i = 1; i < 4; i++){
+            ani.add(new TextureRegion(getTexture(), i*16, 10, 16,16));
+        }
+        aRun = new Animation(0.1f, ani);
+        ani.clear();
+
+        for(int i = 4; i < 6; i++){
+            ani.add(new TextureRegion(getTexture(), i*16, 10, 16,16));
+        }
+        aJump = new Animation(0.1f, ani);
+
+        stand = new TextureRegion(getTexture(),0,10,16,16);
+
         buildActor();
-        // chưa tính được tọa độ x,y để lắp vào
-        stand = new TextureRegion(getTexture(),338,110,16,16);
+
         setBounds(338,110,16/RunGame.RSF, 16/RunGame.RSF);
         setRegion(stand);
     }
@@ -38,14 +68,61 @@ public class Actor extends Sprite {
         body.createFixture(fdf).setUserData(this);
     }
 
-    public void update(float dt){
+    public void update(float deltatime){
         setPosition(body.getPosition().x - getWidth()/2, body.getPosition().y - getHeight()/2);
+        setRegion(getFrame(deltatime));
+    }
+    public TextureRegion getFrame(float deltatime){
+        currState = getState();
+        TextureRegion t_region;
+
+        switch(currState){
+            case STANDING:
+            case JUMPING:
+                t_region = (TextureRegion) aJump.getKeyFrame(timeofState);
+                break;
+            case RUNNING:
+                t_region = (TextureRegion) aRun.getKeyFrame(timeofState, true);
+                break;
+            case FALLING:
+            default:
+                t_region = aStand;
+                break;
+        }
+
+        // actor run left/right - facing?
+        facing(t_region);
+        if(currState == prevState)
+            timeofState += deltatime;
+        else timeofState = 0;
+
+        prevState = currState;
+
+        return t_region;
+    }
+    public State getState(){
+        if(body.getLinearVelocity().x != 0)
+            return State.RUNNING;
+        else if(body.getLinearVelocity().y > 0 || (body.getLinearVelocity().y < 0 && prevState == State.JUMPING))
+            return State.JUMPING;
+        else if(body.getLinearVelocity().y < 0)
+            return State.FALLING;
+        else return State.STANDING;
+    }
+    private void facing(TextureRegion region){
+        if((body.getLinearVelocity().x < 0 || !getRight) && !region.isFlipX()){
+            region.flip(true, false);
+            getRight = false;
+        }
+        else if((body.getLinearVelocity().x > 0 || getRight) && region.isFlipX()){
+            region.flip(true, false);
+            getRight = true;
+        }
     }
     public void hit(Enemy enemy){
 
         if(enemy instanceof Turtle && ((Turtle) enemy).getCurrentState()==Turtle.State.STANDING_SHELL){
-            ((Turtle)enemy).setCurrentState(Turtle.State.DEAD);
-           // ((Turtle)enemy).kick(this.getX()<enemy.getX()?Turtle.KICK_RIGHT_SPEED:Turtle.KICK_LEFT_SPEED);
+            ((Turtle)enemy).kick(this.getX()<enemy.getX()?Turtle.KICK_RIGHT_SPEED:Turtle.KICK_LEFT_SPEED);
         }
     }
 }

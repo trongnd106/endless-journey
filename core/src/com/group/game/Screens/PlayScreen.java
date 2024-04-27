@@ -20,8 +20,11 @@ import com.group.game.Scenes.Hud;
 import com.group.game.Sprites.Actor;
 import com.group.game.Tools.B2WorldCreator;
 import com.group.game.Tools.WorldContactListener;
-import com.group.game.enemies.Deathcap;
 import com.group.game.enemies.Enemy;
+
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.io.File;
 
 public class PlayScreen implements Screen {
     private RunGame game;
@@ -49,6 +52,7 @@ public class PlayScreen implements Screen {
 
         loader = new TmxMapLoader();
         map = loader.load("map.tmx");
+
         renderer = new OrthogonalTiledMapRenderer(map, 1 / game.RSF);
 
         gameCam.position.set(game.WIDTH/2/game.RSF, game.HEIGHT/2/game.RSF, 0);
