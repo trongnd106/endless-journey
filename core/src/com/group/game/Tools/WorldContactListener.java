@@ -1,8 +1,8 @@
 package com.group.game.Tools;
 
 import com.badlogic.gdx.physics.box2d.*;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.group.game.RunGame;
+import com.group.game.Sprites.Actor;
 import com.group.game.enemies.Enemy;
 
     public class WorldContactListener implements ContactListener {//duoc goi tu
@@ -32,11 +32,24 @@ import com.group.game.enemies.Enemy;
                     break;
                 case RunGame.ENEMY_BIT|RunGame.ENEMY_BIT:
 
-                    ((Enemy)fixA.getUserData()).reverseVelocity(true,false);
-                    ((Enemy)fixB.getUserData()).reverseVelocity(true,false);
+                    ((Enemy)fixA.getUserData()).onEnemyHit((Enemy)fixB.getUserData());
+                    ((Enemy)fixB.getUserData()).onEnemyHit((Enemy)fixA.getUserData());
 
                     break;
-
+                case RunGame.ENEMY_HEAD_BIT|RunGame.ACTOR_BIT:
+                        if(fixA.getFilterData().categoryBits==RunGame.ENEMY_HEAD_BIT){
+                            ((Enemy)fixA.getUserData()).hitOnHead((Actor) fixB.getUserData());
+                        }
+                        else {
+                    ((Enemy)fixB.getUserData()).hitOnHead((Actor) fixA.getUserData());
+                }
+                        break;
+                case RunGame.ENEMY_BIT|RunGame.ACTOR_BIT:
+                    if(fixA.getFilterData().categoryBits==RunGame.ACTOR_BIT){
+                        ((Actor)fixA.getUserData()).hit((Enemy)fixB.getUserData());
+                    }
+                    else  ((Actor)fixB.getUserData()).hit((Enemy)fixA.getUserData());
+                    break;
             }
         }
         @Override

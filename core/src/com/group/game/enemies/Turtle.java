@@ -9,6 +9,7 @@ import com.badlogic.gdx.utils.Array;
 import com.group.game.RunGame;
 import com.group.game.Screens.PlayScreen;
 import com.group.game.Sprites.Actor;
+import com.group.game.Tools.B2WorldCreator;
 
 public class Turtle extends Enemy{
     public static final int KICK_LEFT_SPEED=-2;
@@ -73,10 +74,10 @@ public class Turtle extends Enemy{
             if(((Turtle)enemy).currentState==State.MOVING_SHELL&&currentState!=State.MOVING_SHELL){//2 con rua collision
                 killed();
             }
-            else if( currentState==State.MOVING_SHELL&&((Turtle)enemy).currentState==State.WALKING)return;
+            else if( currentState!=State.MOVING_SHELL&&((Turtle)enemy).currentState==State.WALKING)return;
             else reverseVelocity(true,false);
         }
-        else if( currentState!=State.MOVING_SHELL){
+        else if( currentState==State.MOVING_SHELL){
             reverseVelocity(true,false);
         }
     }
@@ -119,10 +120,12 @@ public class Turtle extends Enemy{
             if(stateTime>5&&!destroyed){//
                 world.destroyBody(b2body);
                 destroyed=true;
+                B2WorldCreator.removeTurtles(this);
             }
         }
-        else
-            b2body.setLinearVelocity(velocity);
+        else {
+            if(currentState!=State.STANDING_SHELL) b2body.setLinearVelocity(velocity);
+        }
     }
 
     @Override
@@ -140,6 +143,11 @@ public class Turtle extends Enemy{
     public State getCurrentState(){
         return currentState;
     }
+
+   public void setCurrentState(State currentState){
+        this.currentState=currentState;
+   }
+
     public void draw(Batch batch){
         if(!destroyed){
             super.draw(batch);

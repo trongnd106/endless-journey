@@ -1,6 +1,7 @@
 package com.group.game.enemies;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -13,13 +14,12 @@ import com.group.game.Screens.PlayScreen;
 import com.group.game.Sprites.Actor;
 
 public class Deathcap extends Enemy{
-    public enum State{WALKING,SMASH,DIED}
+    public enum State{WALKING,SMASH}
     public  State currentState;
     public State previousState;
     private float stateTime;
     private Animation<TextureRegion> walkAnimation;
     private Animation<TextureRegion> smashAnimation;
-    private TextureRegion stand;
     private Array<TextureRegion> frames;
     private boolean setToDestroy;
     private boolean destroyed;
@@ -36,8 +36,7 @@ public class Deathcap extends Enemy{
             frames.add(new TextureRegion(screen.getAtlas().findRegion("deathcap"),16*i,0,16,16));
         }
         smashAnimation=new Animation(0.2f,frames);
-        currentState=previousState=State.SMASH
-        ;
+        currentState=previousState=State.WALKING;
         setBounds(getX(),getY(),16/ RunGame.RSF,16/RunGame.RSF);
     }
 
@@ -81,15 +80,15 @@ public class Deathcap extends Enemy{
                 region=walkAnimation.getKeyFrame(stateTime,true);
                 break;
              case SMASH:
-                region=walkAnimation.getKeyFrame(stateTime,true);
+                region=smashAnimation.getKeyFrame(stateTime);
                 break;
             default:
                 region=new TextureRegion(screen.getAtlas().findRegion("deathcap"),16*7,0,16,16);
         }
-        if(velocity.x>0&&region.isFlipX()==false){
+        if(velocity.x>0&&region.isFlipX()==true){
             region.flip(true,false);
         }
-        else if(velocity.x<0&&region.isFlipX()==true){
+        else if(velocity.x<0&&region.isFlipX()==false){
             region.flip(true,false);
         }
         stateTime=currentState==previousState?stateTime+dt:0;
@@ -98,18 +97,32 @@ public class Deathcap extends Enemy{
     }
     @Override
     public void update(float dt) {
-        setRegion(getFrame(dt));
-        setPosition(b2body.getPosition().x-getWidth()/2,b2body.getPosition().y-getHeight()/2);
-        b2body.setLinearVelocity(velocity);
-    }
+        if(setToDestroy&&!destroyed) {
+            System.out.println("hello");
+            currentState = State.SMASH;
+            destroyed = true;
+            world.destroyBody(b2body);
+        }
 
+            setRegion(getFrame(dt));
+            setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
+            b2body.setLinearVelocity(velocity);
+
+    }
+public  void draw(Batch batch){
+        if(!destroyed)super.draw(batch);
+        else if(stateTime<1)super.draw(batch);
+}
     @Override
     public void hitOnHead(Actor mario) {
-
+        setToDestroy=true;
     }
 
     @Override
     public void onEnemyHit(Enemy enemy) {
-
+        if(enemy instanceof Turtle && ((Turtle)enemy).currentState==Turtle.State.MOVING_SHELL){
+            setToDestroy=true;
+        }
+        else reverseVelocity(true,false);
     }
 }

@@ -6,6 +6,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.group.game.RunGame;
 import com.group.game.Screens.PlayScreen;
 import com.group.game.enemies.Enemy;
+import com.group.game.enemies.Turtle;
 
 public class Actor extends Sprite {
     private World world;
@@ -42,5 +43,9 @@ public class Actor extends Sprite {
     }
     public void hit(Enemy enemy){
 
+        if(enemy instanceof Turtle && ((Turtle) enemy).getCurrentState()==Turtle.State.STANDING_SHELL){
+            ((Turtle)enemy).setCurrentState(Turtle.State.DEAD);
+           // ((Turtle)enemy).kick(this.getX()<enemy.getX()?Turtle.KICK_RIGHT_SPEED:Turtle.KICK_LEFT_SPEED);
+        }
     }
 }
