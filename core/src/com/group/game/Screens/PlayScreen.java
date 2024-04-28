@@ -3,6 +3,7 @@ package com.group.game.Screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -22,10 +23,6 @@ import com.group.game.Tools.B2WorldCreator;
 import com.group.game.Tools.WorldContactListener;
 import com.group.game.enemies.Enemy;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.io.File;
-
 public class PlayScreen implements Screen {
     private RunGame game;
     private Texture texture;
@@ -35,12 +32,14 @@ public class PlayScreen implements Screen {
     private TiledMap map;
     private TextureAtlas atlas;
     private OrthogonalTiledMapRenderer renderer;
+    private Music music;
 
     private World world;
     private Box2DDebugRenderer b2dr;
     private B2WorldCreator b2wc;
     private Hud hud;
     private Actor actor;
+
     public PlayScreen(RunGame game){
         this.game = game;
 
@@ -65,6 +64,11 @@ public class PlayScreen implements Screen {
         b2wc = new B2WorldCreator(this);
 
         world.setContactListener(new WorldContactListener());
+
+        // get music
+        music = RunGame.manager.get("music/battleThemeA.mp3", Music.class);
+        music.setLooping(true);
+        music.play();
     }
     @Override
     public void show() {
@@ -89,6 +93,7 @@ public class PlayScreen implements Screen {
         renderer.setView(gameCam);
     }
 
+    // xử lí sự kiện đầu vào click,press
     public void handleInput(float dt){
         if(Gdx.input.isKeyJustPressed(Input.Keys.UP))
             actor.body.applyLinearImpulse(new Vector2(0,3f), actor.body.getWorldCenter(), true);

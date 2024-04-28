@@ -3,6 +3,7 @@ package com.group.game.Sprites;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.group.game.RunGame;
@@ -66,6 +67,14 @@ public class Actor extends Sprite {
                 |RunGame.OBJECT_BIT|RunGame.ENEMY_BIT|RunGame.ENEMY_HEAD_BIT|RunGame.ITEM_BIT;//cac vat the co the va cham
 
         body.createFixture(fdf).setUserData(this);
+
+        // identify collision objects - tạo cảm biến trên đầu -> nhảy lên va chạm
+        EdgeShape head = new EdgeShape();
+        head.set(new Vector2(-2/RunGame.RSF, 6/RunGame.RSF), new Vector2(2/RunGame.RSF, 6/RunGame.RSF));
+        fdf.shape = head;
+        // is sensor ? no longer collide with anything
+        fdf.isSensor = true;
+        body.createFixture(fdf).setUserData("head");
     }
 
     public void update(float deltatime){
@@ -120,7 +129,6 @@ public class Actor extends Sprite {
         }
     }
     public void hit(Enemy enemy){
-
         if(enemy instanceof Turtle && ((Turtle) enemy).getCurrentState()==Turtle.State.STANDING_SHELL){
             ((Turtle)enemy).kick(this.getX()<enemy.getX()?Turtle.KICK_RIGHT_SPEED:Turtle.KICK_LEFT_SPEED);
         }

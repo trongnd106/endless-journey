@@ -1,6 +1,9 @@
 package com.group.game;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -23,10 +26,18 @@ public class RunGame extends Game {
 	public static final short 	ITEM_BIT=256;
 	public static final short ACTOR_HEAD_BIT=512;
 
+	public static AssetManager manager;   // for game music
 	public SpriteBatch batch;
+
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
+		// loading game music & sound for all
+		manager = new AssetManager();
+		manager.load("music/battleThemeA.mp3", Music.class);
+//		manager.load("sound/breakblock.wav", Sound.class);
+		manager.finishLoading();    // cho tất cả vào hàng đợi, chờ sử dụng - 'manager.get'
+
 		setScreen(new PlayScreen(this));
 	}
 
