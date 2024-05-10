@@ -12,7 +12,7 @@ import com.group.game.enemies.Enemy;
             Fixture fixB= contact.getFixtureB();
             int cDef=fixA.getFilterData().categoryBits|fixB.getFilterData().categoryBits;
 
-//        if(fixA.getUserData()=="head"||fixB.getUserData()=="head"){
+//      if(fixA.getUserData()=="head"||fixB.getUserData()=="head"){
 //            Fixture head=fixA.getUserData()=="head"?fixA:fixB;
 //            Fixture object=fixA.getUserData()!="head"?fixA:fixB;
 //

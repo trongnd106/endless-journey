@@ -31,11 +31,11 @@ public abstract class InteractiveObject {
         body.createFixture(fdef);
 */
         bdef.type = BodyDef.BodyType.StaticBody;
-        bdef.position.set((float) ((bound.getX() +bound.getWidth() / 2) / RunGame.RSF), (float) ((bound.getY() + bound.getHeight() / 2) / RunGame.RSF));
+        bdef.position.set( ((bound.getX() +bound.getWidth() / 2) / RunGame.RSF),  ((bound.getY() + bound.getHeight() / 2) / RunGame.RSF));
 
         body = world.createBody(bdef);
 
-        shape.setAsBox((float) (bound.getWidth() / 2 / RunGame.RSF), (float) (bound.getHeight() / 2 / RunGame.RSF));
+        shape.setAsBox( (bound.getWidth() / 2 / RunGame.RSF), (bound.getHeight() / 2 / RunGame.RSF));
         fdef.shape = shape;
         fdef.filter.categoryBits=RunGame.COIN_BIT;
         body.createFixture(fdef).setUserData(this);
