@@ -8,6 +8,8 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.group.game.RunGame;
 import com.group.game.Screens.PlayScreen;
+import com.group.game.Sprites.Brick;
+import com.group.game.Sprites.Coin;
 import com.group.game.enemies.Deathcap;
 import com.group.game.enemies.Enemy;
 import com.group.game.enemies.Turtle;
@@ -55,31 +57,13 @@ public class B2WorldCreator {
         //create coin bodies/fixtures
         for (MapObject object : map.getLayers().get(4).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
-
-            bdef.type = BodyDef.BodyType.StaticBody;
-            bdef.position.set((rectangle.getX() + rectangle.getWidth() / 2) / RunGame.RSF, (rectangle.getY() + rectangle.getHeight() / 2) / RunGame.RSF);
-
-            body = world.createBody(bdef);
-
-            shape.setAsBox(rectangle.getWidth() / 2 / RunGame.RSF, rectangle.getHeight() / 2 / RunGame.RSF);
-            fdef.shape = shape;
-            fdef.filter.categoryBits=RunGame.COIN_BIT;
-            body.createFixture(fdef).setUserData(this);
+            new Coin(world,map,rectangle);
         }
 
         //create brick bodies/fixtures
         for (MapObject object : map.getLayers().get(5).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
-
-            bdef.type = BodyDef.BodyType.StaticBody;
-            bdef.position.set((rectangle.getX() + rectangle.getWidth() / 2) / RunGame.RSF, (rectangle.getY() + rectangle.getHeight() / 2) / RunGame.RSF);
-
-            body = world.createBody(bdef);
-
-            shape.setAsBox(rectangle.getWidth() / 2 / RunGame.RSF, rectangle.getHeight() / 2 / RunGame.RSF);
-            fdef.shape = shape;
-            fdef.filter.categoryBits=RunGame.COIN_BIT;
-            body.createFixture(fdef).setUserData(this);
+            new Brick(world,map,rectangle);
         }
         deathcaps=new Array<Deathcap>();
         for(MapObject object:map.getLayers().get(6).getObjects().getByType(RectangleMapObject.class)){
