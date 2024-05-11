@@ -59,6 +59,7 @@ public class B2WorldCreator {
             Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
 
             new Coin(world, map, rectangle);
+
         }
 
         //create brick bodies/fixtures

@@ -2,14 +2,17 @@ package com.group.game.Sprites;
 
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
+
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.*;
 import com.group.game.RunGame;
+
 
 public abstract class InteractiveObject {
     protected World world;
     protected TiledMap map;
     protected TiledMapTile tile;
+
     protected Rectangle bounds;
     protected Body body;
     protected  Fixture fixture;
@@ -34,4 +37,4 @@ public abstract class InteractiveObject {
     }
 
     public abstract void onHeadHit();
-}
+

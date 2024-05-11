@@ -1,5 +1,6 @@
 package com.group.game.Sprites;
 
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Rectangle;
@@ -15,5 +16,3 @@ public class Brick extends InteractiveObject {
     public void onHeadHit() {
         Gdx.app.log("Brick", "Collision");
     }
-
-}

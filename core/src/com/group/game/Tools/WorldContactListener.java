@@ -21,6 +21,7 @@ import com.group.game.enemies.Enemy;
                 ((InteractiveObject)object.getUserData()).onHeadHit();
             }
         }
+
             switch(cDef){
 
                 case RunGame.ENEMY_BIT|RunGame.OBJECT_BIT:
