@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.World;
 
 public class Brick extends InteractiveObject {
-    public Brick(World world, TiledMap map, Rectangle bounds){
+    public Brick(World world, TiledMap map, Rectangle bounds) {
         super(world, map, bounds);
         fixture.setUserData(this);
     }
@@ -16,3 +16,4 @@ public class Brick extends InteractiveObject {
     public void onHeadHit() {
         Gdx.app.log("Brick", "Collision");
     }
+}
