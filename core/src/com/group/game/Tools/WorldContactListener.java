@@ -3,6 +3,7 @@ package com.group.game.Tools;
 import com.badlogic.gdx.physics.box2d.*;
 import com.group.game.RunGame;
 import com.group.game.Sprites.Actor;
+import com.group.game.Sprites.InteractiveTileObject;
 import com.group.game.enemies.Enemy;
 
     public class WorldContactListener implements ContactListener {//duoc goi tu
@@ -12,14 +13,14 @@ import com.group.game.enemies.Enemy;
             Fixture fixB= contact.getFixtureB();
             int cDef=fixA.getFilterData().categoryBits|fixB.getFilterData().categoryBits;
 
-//        if(fixA.getUserData()=="head"||fixB.getUserData()=="head"){
-//            Fixture head=fixA.getUserData()=="head"?fixA:fixB;
-//            Fixture object=fixA.getUserData()!="head"?fixA:fixB;
-//
-//            if(object.getUserData()!=null&& InteractiveTileObject.class.isAssignableFrom(object.getUserData().getClass())){
-//                ((InteractiveTileObject)object.getUserData()).onHeadHit();
-//            }
-//        }
+        if(fixA.getUserData()=="head"||fixB.getUserData()=="head"){
+            Fixture head=fixA.getUserData()=="head"?fixA:fixB;
+            Fixture object=fixA.getUserData()!="head"?fixA:fixB;
+
+            if(object.getUserData()!=null&& InteractiveTileObject.class.isAssignableFrom(object.getUserData().getClass())){
+                ((InteractiveTileObject)object.getUserData()).onHeadHit();
+            }
+        }
             switch(cDef){
 
                 case RunGame.ENEMY_BIT|RunGame.OBJECT_BIT:

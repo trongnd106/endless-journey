@@ -15,18 +15,18 @@ public class Actor extends Sprite {
     public enum State {STANDING, JUMPING, RUNNING, FALLING, DEATH}
     public State currState;
     public State prevState;
-    private Animation aRun;
+    private Animation<TextureRegion> aRun;
     private TextureRegion aDead;
-    private Animation aJump;
+    private Animation<TextureRegion> aJump;
     private TextureRegion aStand;
     private boolean getRight;
     private float timeofState;
 
     private World world;
     public Body body;
-    private TextureRegion stand;
+    //private TextureRegion stand;
     public Actor(World world, PlayScreen screen){
-        super(screen.getAtlas().findRegion("deathcap"));
+        super(screen.getAtlas().findRegion("little_mario"));
         this.world = world;
         currState = State.STANDING;
         prevState = State.STANDING;
@@ -35,22 +35,25 @@ public class Actor extends Sprite {
 
         Array<TextureRegion> ani = new Array<TextureRegion>();
         for(int i = 1; i < 4; i++){
+            //ani.add(new TextureRegion(screen.getAtlas().findRegion("little_mario"),16*i,0,16,16));
             ani.add(new TextureRegion(getTexture(), i*16, 10, 16,16));
         }
-        aRun = new Animation(0.1f, ani);
+        aRun = new Animation<TextureRegion>(0.1f, ani);
         ani.clear();
 
         for(int i = 4; i < 6; i++){
+            //ani.add(new TextureRegion(screen.getAtlas().findRegion("little_mario"),16*i,0,16,16));
             ani.add(new TextureRegion(getTexture(), i*16, 10, 16,16));
         }
-        aJump = new Animation(0.1f, ani);
+        aJump = new Animation<TextureRegion>(0.1f, ani);
 
-        stand = new TextureRegion(getTexture(),0,10,16,16);
+        //aStand = new TextureRegion(screen.getAtlas().findRegion("little_mario"),0,0,16,16);
+        aStand = new TextureRegion(getTexture(),0,10,16,16);
 
         buildActor();
 
         setBounds(338,110,16/RunGame.RSF, 16/RunGame.RSF);
-        setRegion(stand);
+        setRegion(aStand);
     }
     private void buildActor(){
         BodyDef bdf = new BodyDef();
@@ -71,6 +74,7 @@ public class Actor extends Sprite {
         // identify collision objects - tạo cảm biến trên đầu -> nhảy lên va chạm
         EdgeShape head = new EdgeShape();
         head.set(new Vector2(-2/RunGame.RSF, 6/RunGame.RSF), new Vector2(2/RunGame.RSF, 6/RunGame.RSF));
+        fdf.filter.categoryBits=RunGame.ACTOR_HEAD_BIT;
         fdf.shape = head;
         // is sensor ? no longer collide with anything
         fdf.isSensor = true;
@@ -118,7 +122,7 @@ public class Actor extends Sprite {
             return State.FALLING;
         else return State.STANDING;
     }
-    private void facing(TextureRegion region){
+    public void facing(TextureRegion region){
         if((body.getLinearVelocity().x < 0 || !getRight) && !region.isFlipX()){
             region.flip(true, false);
             getRight = false;
