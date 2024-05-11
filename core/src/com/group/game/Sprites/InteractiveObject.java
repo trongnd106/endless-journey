@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.*;
 import com.group.game.RunGame;
 
-public abstract class InteractiveTileObject {
+public abstract class InteractiveObject {
     protected World world;
     protected TiledMap map;
     protected TiledMapTile tile;
@@ -14,7 +14,7 @@ public abstract class InteractiveTileObject {
     protected Body body;
     protected  Fixture fixture;
 
-    public InteractiveTileObject(World world, TiledMap map, Rectangle bounds){
+    public InteractiveObject(World world, TiledMap map, Rectangle bounds){
         this.world = world;
         this.map = map;
         this.bounds = bounds;

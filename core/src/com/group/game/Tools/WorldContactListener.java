@@ -3,7 +3,7 @@ package com.group.game.Tools;
 import com.badlogic.gdx.physics.box2d.*;
 import com.group.game.RunGame;
 import com.group.game.Sprites.Actor;
-import com.group.game.Sprites.InteractiveTileObject;
+import com.group.game.Sprites.InteractiveObject;
 import com.group.game.enemies.Enemy;
 
     public class WorldContactListener implements ContactListener {//duoc goi tu
@@ -17,8 +17,8 @@ import com.group.game.enemies.Enemy;
             Fixture head=fixA.getUserData()=="head"?fixA:fixB;
             Fixture object=fixA.getUserData()!="head"?fixA:fixB;
 
-            if(object.getUserData()!=null&& InteractiveTileObject.class.isAssignableFrom(object.getUserData().getClass())){
-                ((InteractiveTileObject)object.getUserData()).onHeadHit();
+            if(object.getUserData()!=null&& InteractiveObject.class.isAssignableFrom(object.getUserData().getClass())){
+                ((InteractiveObject)object.getUserData()).onHeadHit();
             }
         }
             switch(cDef){
