@@ -15,9 +15,9 @@ public abstract class InteractiveObject {
 
     protected Rectangle bounds;
     protected Body body;
-    protected  Fixture fixture;
+    protected Fixture fixture;
 
-    public InteractiveObject(World world, TiledMap map, Rectangle bounds){
+    public InteractiveObject(World world, TiledMap map, Rectangle bounds) {
         this.world = world;
         this.map = map;
         this.bounds = bounds;
@@ -37,4 +37,5 @@ public abstract class InteractiveObject {
     }
 
     public abstract void onHeadHit();
+}
 

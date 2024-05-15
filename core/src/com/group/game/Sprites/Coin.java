@@ -19,6 +19,5 @@ public class Coin extends InteractiveObject {
     @Override
     public void onHeadHit() {
         Gdx.app.log("Coin", "Collision");
-
     }
 }

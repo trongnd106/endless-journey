@@ -17,9 +17,9 @@ import com.group.game.enemies.Enemy;
             Fixture head=fixA.getUserData()=="head"?fixA:fixB;
             Fixture object=fixA.getUserData()!="head"?fixA:fixB;
 
-            if(object.getUserData()!=null&& InteractiveObject.class.isAssignableFrom(object.getUserData().getClass())){
-                ((InteractiveObject)object.getUserData()).onHeadHit();
-            }
+//            if(object.getUserData()!=null&& InteractiveObject.class.isAssignableFrom(object.getUserData().getClass())){
+//                ((InteractiveObject)object.getUserData()).onHeadHit();
+//            }
         }
 
             switch(cDef){
