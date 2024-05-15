@@ -7,6 +7,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.group.game.Screens.Menu;
 import com.group.game.Screens.PlayScreen;
 
 public class RunGame extends Game {
@@ -38,7 +39,7 @@ public class RunGame extends Game {
 //		manager.load("sound/breakblock.wav", Sound.class);
 		manager.finishLoading();    // cho tất cả vào hàng đợi, chờ sử dụng - 'manager.get'
 
-		setScreen(new PlayScreen(this));
+		setScreen(new Menu(this));
 	}
 
 	@Override
