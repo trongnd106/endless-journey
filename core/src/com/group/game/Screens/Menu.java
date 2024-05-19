@@ -85,7 +85,7 @@ public class Menu implements Screen {
         table.row();
         table.add(exitButton).uniformX();
 
-        img=new Texture("c8fc4f04a9db44df9bdfe42ee4877698.jpg");
+        img=new Texture("441015357_466884055874034_5865246032084356054_n.png");
         vp = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
     }
