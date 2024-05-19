@@ -95,6 +95,7 @@ public class PlayScreen implements Screen {
 
         world.step(1 / 60f, 6, 2);
         actor.update(dt);
+        hud.update(dt);
         gameCam.position.x = actor.body.getPosition().x;
 
         for(Enemy enemy: b2wc.getEnemies()){
