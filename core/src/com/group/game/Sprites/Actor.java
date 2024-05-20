@@ -24,6 +24,7 @@ public class Actor extends Sprite {
 
     private World world;
     public Body body;
+    private boolean posi;
     //private TextureRegion stand;
     public Actor(World world, PlayScreen screen){
         super(screen.getAtlas().findRegion("little_mario"));
@@ -52,8 +53,9 @@ public class Actor extends Sprite {
 
         buildActor();
 
-        setBounds(338,110,16/RunGame.RSF, 16/RunGame.RSF);
+        setBounds(16,16,16/RunGame.RSF, 16/RunGame.RSF);
         setRegion(aStand);
+        posi=false;
     }
     private void buildActor(){
         BodyDef bdf = new BodyDef();
@@ -67,7 +69,7 @@ public class Actor extends Sprite {
         fdf.shape = shape;
         fdf.filter.categoryBits=RunGame.ACTOR_BIT;//vat the
         fdf.filter.maskBits=RunGame.GROUND_BIT |RunGame.BRICK_BIT|RunGame.COIN_BIT
-                |RunGame.OBJECT_BIT|RunGame.ENEMY_BIT|RunGame.ENEMY_HEAD_BIT|RunGame.ITEM_BIT;//cac vat the co the va cham
+                |RunGame.OBJECT_BIT|RunGame.ENEMY_BIT|RunGame.ENEMY_HEAD_BIT|RunGame.ITEM_BIT|RunGame.PIPE_HEAD_BIT;//cac vat the co the va cham
 
         body.createFixture(fdf).setUserData(this);
 
@@ -82,6 +84,8 @@ public class Actor extends Sprite {
     }
 
     public void update(float deltatime){
+       // System.out.println(getX()+" "+getY());
+        if(posi)body.setTransform(15.616586f ,0.30499923f, body.getAngle());
         setPosition(body.getPosition().x - getWidth()/2, body.getPosition().y - getHeight()/2);
         setRegion(getFrame(deltatime));
     }
@@ -136,5 +140,8 @@ public class Actor extends Sprite {
         if(enemy instanceof Turtle && ((Turtle) enemy).getCurrentState()==Turtle.State.STANDING_SHELL){
             ((Turtle)enemy).kick(this.getX()<enemy.getX()?Turtle.KICK_RIGHT_SPEED:Turtle.KICK_LEFT_SPEED);
         }
+    }
+    public void in(){
+        posi=true;
     }
 }

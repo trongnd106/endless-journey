@@ -100,7 +100,6 @@ public class Deathcap extends Enemy{
     @Override
     public void update(float dt) {
         if(setToDestroy&&!destroyed) {
-            System.out.println("hello");
             currentState = State.SMASH;
             destroyed = true;
             world.destroyBody(b2body);

@@ -10,6 +10,7 @@ import com.group.game.RunGame;
 import com.group.game.Screens.PlayScreen;
 import com.group.game.Sprites.Brick;
 import com.group.game.Sprites.Coin;
+import com.group.game.Sprites.pipe;
 import com.group.game.enemies.Deathcap;
 import com.group.game.enemies.Enemy;
 import com.group.game.enemies.Turtle;
@@ -43,17 +44,8 @@ public class B2WorldCreator {
         for (MapObject object : map.getLayers().get(3).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
 
-            bdef.type = BodyDef.BodyType.StaticBody;
-            bdef.position.set((rectangle.getX() + rectangle.getWidth() / 2) / RunGame.RSF, (rectangle.getY() + rectangle.getHeight() / 2) / RunGame.RSF);
-
-            body = world.createBody(bdef);
-
-            shape.setAsBox(rectangle.getWidth() / 2 / RunGame.RSF, rectangle.getHeight() / 2 / RunGame.RSF);
-            fdef.shape = shape;
-            fdef.filter.categoryBits=RunGame.OBJECT_BIT;
-            body.createFixture(fdef);
+           new pipe(world,map,rectangle,object);
         }
-
         //create coin bodies/fixtures
         for (MapObject object : map.getLayers().get(4).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
