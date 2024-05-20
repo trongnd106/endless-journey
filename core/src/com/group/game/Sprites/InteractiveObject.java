@@ -16,6 +16,7 @@ public abstract class InteractiveObject {
     protected Rectangle bounds;
     protected Body body;
     protected Fixture fixture;
+    protected  FixtureDef fdef;
 
     public InteractiveObject(World world, TiledMap map, Rectangle bounds) {
         this.world = world;
@@ -23,7 +24,7 @@ public abstract class InteractiveObject {
         this.bounds = bounds;
 
         BodyDef bdef = new BodyDef();
-        FixtureDef fdef = new FixtureDef();
+         fdef = new FixtureDef();
         PolygonShape shape = new PolygonShape();
 
         bdef.type = BodyDef.BodyType.StaticBody;
@@ -36,6 +37,12 @@ public abstract class InteractiveObject {
         fixture = body.createFixture(fdef);
     }
 
-    public abstract void onHeadHit();
+    public abstract void onHeadHit(Actor mario);
+    public void setCatergoryFilter(short filterBit){
+        Filter filter=new Filter();
+        filter.categoryBits=filterBit;
+        fixture.setFilterData(filter);
+    }
 }
+
 

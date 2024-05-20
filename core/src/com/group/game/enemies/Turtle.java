@@ -72,7 +72,7 @@ public class Turtle extends Enemy{
     public void onEnemyHit(Enemy enemy) {
         if(enemy instanceof Turtle){
             if(((Turtle)enemy).currentState==State.MOVING_SHELL&&currentState!=State.MOVING_SHELL){//2 con rua collision
-                killed();
+                this.killed();
             }
             else if( currentState!=State.MOVING_SHELL&&((Turtle)enemy).currentState==State.WALKING)return;
             else reverseVelocity(true,false);
@@ -117,7 +117,7 @@ public class Turtle extends Enemy{
         if(currentState==State.DEAD){
             deadRotationDegrees+=3;
             rotate(deadRotationDegrees);//method of interface sprite
-            if(stateTime>5&&!destroyed){//
+            if(stateTime>5&&destroyed==false){//
                 world.destroyBody(b2body);
                 destroyed=true;
                 B2WorldCreator.removeTurtles(this);

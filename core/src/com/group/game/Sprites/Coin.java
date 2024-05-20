@@ -17,7 +17,7 @@ public class Coin extends InteractiveObject {
     }
 
     @Override
-    public void onHeadHit() {
+    public void onHeadHit(Actor mario) {
         Gdx.app.log("Coin", "Collision");
     }
 }

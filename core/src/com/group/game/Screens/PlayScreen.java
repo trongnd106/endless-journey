@@ -7,7 +7,9 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -21,7 +23,9 @@ import com.group.game.Scenes.Hud;
 import com.group.game.Sprites.Actor;
 import com.group.game.Tools.B2WorldCreator;
 import com.group.game.Tools.WorldContactListener;
+import com.group.game.Transition.ScreenTransition;
 import com.group.game.enemies.Enemy;
+import com.group.game.enemies.FireBall;
 
 public class PlayScreen implements Screen {
     private RunGame game;
@@ -39,6 +43,12 @@ public class PlayScreen implements Screen {
     private B2WorldCreator b2wc;
     private Hud hud;
     private Actor actor;
+    public static boolean trasition;
+    private ScreenTransition st;
+    private Animation<TextureRegion> img;
+    private Viewport vp;
+    private FireBall fireBall;
+    private float delta;
 
     public PlayScreen(RunGame game){
         this.game = game;
@@ -69,6 +79,11 @@ public class PlayScreen implements Screen {
         music = RunGame.manager.get("music/battleThemeA.mp3", Music.class);
         music.setLooping(true);
         music.play();
+        trasition=false;
+       // st=new ScreenTransition()
+        img=GifDecoder.loadGIFAnimation(Animation.PlayMode.LOOP, Gdx.files.internal("you.gif").read());
+        vp = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        delta=0;
     }
     @Override
     public void show() {
@@ -91,6 +106,7 @@ public class PlayScreen implements Screen {
         gameCam.update();
 
         renderer.setView(gameCam);
+        delta+=dt;
     }
 
     // xử lí sự kiện đầu vào click,press
@@ -117,18 +133,24 @@ public class PlayScreen implements Screen {
         update(dt);
         Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
+        game.batch.begin();
+        game.batch.draw(img.getKeyFrame(delta), 0, 0f);
+        game.batch.end();
         renderer.render();
 
         b2dr.render(world, gameCam.combined);
 
+
         game.batch.setProjectionMatrix(gameCam.combined);
+
         game.batch.begin();
         actor.draw(game.batch);
+
         for(Enemy enemy:b2wc.getEnemies()){
             enemy.draw(game.batch);
         }
         game.batch.end();
+
 
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
         hud.stage.draw();

@@ -13,7 +13,7 @@ public class Brick extends InteractiveObject {
     }
 
     @Override
-    public void onHeadHit() {
+    public void onHeadHit(Actor mario) {
         Gdx.app.log("Brick", "Collision");
     }
 }
