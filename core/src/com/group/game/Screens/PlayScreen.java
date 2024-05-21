@@ -52,10 +52,6 @@ public class PlayScreen implements Screen {
     private FireBall fireBall;
     private float delta;
 
-    private Texture img;
-
-    private Viewport vp;
-
     public PlayScreen(RunGame game){
         this.game = game;
 
