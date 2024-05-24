@@ -51,7 +51,9 @@ public class PlayScreen implements Screen {
     private Viewport vp;
     private FireBall fireBall;
     private float delta;
+
     private float previousPositionY ,cnt,curr;
+
 
     public PlayScreen(RunGame game){
         this.game = game;
@@ -140,6 +142,7 @@ public class PlayScreen implements Screen {
         update(dt);
         Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
 
         game.batch.begin();
         game.batch.draw(img.getKeyFrame(delta), 0, 0f);
