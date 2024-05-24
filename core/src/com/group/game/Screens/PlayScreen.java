@@ -51,10 +51,7 @@ public class PlayScreen implements Screen {
     private Viewport vp;
     private FireBall fireBall;
     private float delta;
-
-    private Texture img;
-
-    private Viewport vp;
+    private float previousPositionY ,cnt,curr;
 
     public PlayScreen(RunGame game){
         this.game = game;
@@ -90,6 +87,8 @@ public class PlayScreen implements Screen {
         img=GifDecoder.loadGIFAnimation(Animation.PlayMode.LOOP, Gdx.files.internal("you.gif").read());
         vp = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         delta=0;
+        previousPositionY=actor.getY();
+        curr=cnt=0;
     }
     @Override
     public void show() {
@@ -98,7 +97,6 @@ public class PlayScreen implements Screen {
 
     public void update(float dt){
         handleInput(dt);
-
         world.step(1 / 60f, 6, 2);
         actor.update(dt);
         hud.update(dt);
@@ -118,8 +116,10 @@ public class PlayScreen implements Screen {
 
     // xử lí sự kiện đầu vào click,press
     public void handleInput(float dt){
-        if(Gdx.input.isKeyJustPressed(Input.Keys.UP))
-            actor.body.applyLinearImpulse(new Vector2(0,3f), actor.body.getWorldCenter(), true);
+        if(Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
+
+             actor.body.applyLinearImpulse(new Vector2(0, 3f), actor.body.getWorldCenter(), true);
+        }
 
         if(Gdx.input.isKeyPressed(Input.Keys.RIGHT) && actor.body.getLinearVelocity().x <= 2)
             actor.body.applyLinearImpulse(new Vector2(0.1f, 0), actor.body.getWorldCenter(), true);

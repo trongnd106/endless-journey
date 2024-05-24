@@ -71,10 +71,17 @@ public class Turtle extends Enemy{
     @Override
     public void onEnemyHit(Enemy enemy) {
         if(enemy instanceof Turtle){
-            if(((Turtle)enemy).currentState==State.MOVING_SHELL&&currentState!=State.MOVING_SHELL){//2 con rua collision
+            if(((Turtle)enemy).currentState==State.MOVING_SHELL&&currentState!=State.MOVING_SHELL) {//2 con rua collision
                 this.killed();
             }
-            else if( currentState!=State.MOVING_SHELL&&((Turtle)enemy).currentState==State.WALKING)return;
+           else if(((Turtle)enemy).currentState==State.MOVING_SHELL&&currentState==State.MOVING_SHELL) {
+                ((Turtle)enemy).killed();
+                this.killed();
+            }
+            else if( currentState==State.WALKING&&((Turtle)enemy).currentState==State.WALKING){
+                reverseVelocity(true,false);
+                ((Turtle)enemy).setVelocity(new Vector2(0f,0f));
+            }
             else {
                 reverseVelocity(true,false);
                 ((Turtle)enemy).reverseVelocity(true,false);
@@ -84,7 +91,9 @@ public class Turtle extends Enemy{
             reverseVelocity(true,false);
         }
     }
-
+public void setVelocity(Vector2 a){
+    b2body.setLinearVelocity(a);
+}
     public TextureRegion getFrame(float dt){
         TextureRegion region;
 
