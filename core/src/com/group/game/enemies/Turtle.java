@@ -75,9 +75,12 @@ public class Turtle extends Enemy{
                 this.killed();
             }
             else if( currentState!=State.MOVING_SHELL&&((Turtle)enemy).currentState==State.WALKING)return;
-            else reverseVelocity(true,false);
+            else {
+                reverseVelocity(true,false);
+                ((Turtle)enemy).reverseVelocity(true,false);
+            }
         }
-        else if( currentState==State.MOVING_SHELL){
+        else if( currentState==State.MOVING_SHELL||currentState==State.WALKING){
             reverseVelocity(true,false);
         }
     }

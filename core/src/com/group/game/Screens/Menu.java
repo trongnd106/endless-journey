@@ -41,6 +41,9 @@ public class Menu implements Screen {
 
         Table table = new Table();
         table.setFillParent(true);
+
+        //table.left();
+
         stage.addActor(table);
 
         Label gameTitle = new Label("GAME MENU",skin,"big");
@@ -88,9 +91,11 @@ public class Menu implements Screen {
         table.row();
         table.add(exitButton).uniformX();
 
+
         img=new Texture("325020.jpg");
         vp = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         anima = GifDecoder.loadGIFAnimation(Animation.PlayMode.LOOP, Gdx.files.internal("shin.gif").read());
+
         dt=0;
 
     }
@@ -110,6 +115,7 @@ public class Menu implements Screen {
 
         game.batch.begin();
         //game.batch.draw(img, 0, 0, vp.getWorldWidth(), vp.getWorldHeight());
+
         game.batch.draw(anima.getKeyFrame(dt), 0, 0f,vp.getWorldWidth(), vp.getWorldHeight());
         game.batch.end();
 

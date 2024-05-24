@@ -49,13 +49,16 @@ public class B2WorldCreator {
         //create coin bodies/fixtures
         for (MapObject object : map.getLayers().get(4).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
-            new Coin(world,map,rectangle);
+
+            new Coin(world, map, rectangle);
+
         }
 
         //create brick bodies/fixtures
         for (MapObject object : map.getLayers().get(5).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
-            new Brick(world,map,rectangle);
+
+            new Brick(world, map, rectangle);
         }
         deathcaps=new Array<Deathcap>();
         for(MapObject object:map.getLayers().get(6).getObjects().getByType(RectangleMapObject.class)){

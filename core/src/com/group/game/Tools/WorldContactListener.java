@@ -3,6 +3,8 @@ package com.group.game.Tools;
 import com.badlogic.gdx.physics.box2d.*;
 import com.group.game.RunGame;
 import com.group.game.Sprites.Actor;
+import com.group.game.Sprites.InteractiveObject;
+import com.group.game.Sprites.pipe;
 import com.group.game.enemies.Enemy;
 
     public class WorldContactListener implements ContactListener {//duoc goi tu
@@ -12,14 +14,15 @@ import com.group.game.enemies.Enemy;
             Fixture fixB= contact.getFixtureB();
             int cDef=fixA.getFilterData().categoryBits|fixB.getFilterData().categoryBits;
 
-//      if(fixA.getUserData()=="head"||fixB.getUserData()=="head"){
-//            Fixture head=fixA.getUserData()=="head"?fixA:fixB;
-//            Fixture object=fixA.getUserData()!="head"?fixA:fixB;
-//
-//            if(object.getUserData()!=null&& InteractiveTileObject.class.isAssignableFrom(object.getUserData().getClass())){
-//                ((InteractiveTileObject)object.getUserData()).onHeadHit();
+        if(fixA.getUserData()=="head"||fixB.getUserData()=="head"){
+            Fixture head=fixA.getUserData()=="head"?fixA:fixB;
+            Fixture object=fixA.getUserData()!="head"?fixA:fixB;
+
+//            if(object.getUserData()!=null&& InteractiveObject.class.isAssignableFrom(object.getUserData().getClass())){
+//                ((InteractiveObject)object.getUserData()).onHeadHit();
 //            }
-//        }
+        }
+
             switch(cDef){
 
                 case RunGame.ENEMY_BIT|RunGame.OBJECT_BIT:
@@ -50,6 +53,14 @@ import com.group.game.enemies.Enemy;
                     }
                     else  ((Actor)fixB.getUserData()).hit((Enemy)fixA.getUserData());
                     break;
+//                case RunGame.ACTOR_BIT|RunGame.PIPE_HEAD_BIT:
+//                    if(fixA.getFilterData().categoryBits==RunGame.ACTOR_BIT){;
+//                        ((pipe)fixB.getUserData()).onHeadHit((Actor)fixA.getUserData());
+//                    }
+//                    else {
+//                        ((pipe)fixA.getUserData()).onHeadHit((Actor)fixB.getUserData());
+//                    }
+//                    break;
             }
         }
         @Override

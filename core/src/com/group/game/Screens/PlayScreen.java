@@ -16,7 +16,9 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.group.game.RunGame;
 import com.group.game.Scenes.Hud;
@@ -134,9 +136,13 @@ public class PlayScreen implements Screen {
         update(dt);
         Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+
         game.batch.begin();
         game.batch.draw(img.getKeyFrame(delta), 0, 0f);
         game.batch.end();
+
+
         renderer.render();
 
         b2dr.render(world, gameCam.combined);
