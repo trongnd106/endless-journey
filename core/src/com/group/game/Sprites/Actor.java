@@ -27,7 +27,7 @@ public class Actor extends Sprite {
     private boolean posi;
     //private TextureRegion stand;
     public Actor(World world, PlayScreen screen){
-        super(screen.getAtlas().findRegion("little_mario"));
+        super(screen.getAtlas().findRegion("fox_actor"));
         this.world = world;
         currState = State.STANDING;
         prevState = State.STANDING;
@@ -35,25 +35,26 @@ public class Actor extends Sprite {
         getRight = true;
 
         Array<TextureRegion> ani = new Array<TextureRegion>();
-        for(int i = 1; i < 4; i++){
-            //ani.add(new TextureRegion(screen.getAtlas().findRegion("little_mario"),16*i,0,16,16));
-            ani.add(new TextureRegion(getTexture(), i*16, 10, 16,16));
+        for(int i = 1; i < 5; i++){
+            ani.add(new TextureRegion(screen.getAtlas().findRegion("fox_actor"),16*i,0,16,16));
+            //ani.add(new TextureRegion(getTexture(), i*16, 10, 16,16));
         }
         aRun = new Animation<TextureRegion>(0.1f, ani);
         ani.clear();
 
-        for(int i = 4; i < 6; i++){
-            //ani.add(new TextureRegion(screen.getAtlas().findRegion("little_mario"),16*i,0,16,16));
-            ani.add(new TextureRegion(getTexture(), i*16, 10, 16,16));
+        for(int i = 3; i < 5; i++){
+            ani.add(new TextureRegion(screen.getAtlas().findRegion("fox_actor"),16*i,0,16,16));
+            //ani.add(new TextureRegion(getTexture(), i*16, 10, 16,16));
         }
         aJump = new Animation<TextureRegion>(0.1f, ani);
 
-        //aStand = new TextureRegion(screen.getAtlas().findRegion("little_mario"),0,0,16,16);
-        aStand = new TextureRegion(getTexture(),0,10,16,16);
+
+        aStand = new TextureRegion(screen.getAtlas().findRegion("fox_actor"),16,0,16,16);
+        //aStand = new TextureRegion(getTexture(),0,10,16,16);
 
         buildActor();
 
-        setBounds(16,16,16/RunGame.RSF, 16/RunGame.RSF);
+        setBounds(32,32,32/RunGame.RSF, 32/RunGame.RSF);
         setRegion(aStand);
         posi=false;
     }

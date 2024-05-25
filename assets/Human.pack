@@ -24,16 +24,23 @@ little_mario
   orig: 224, 16
   offset: 0, 0
   index: -1
+fox_actor
+  rotate: false
+  xy: 339, 95
+  size: 128, 32
+  orig: 128, 32
+  offset: 0, 0
+  index: -1
 deathcap
   rotate: false
-  xy: 339, 111
+  xy: 259, 77
   size: 128, 16
   orig: 128, 16
   offset: 0, 0
   index: -1
 turtle
   rotate: false
-  xy: 339, 85
+  xy: 259, 51
   size: 96, 24
   orig: 96, 24
   offset: 0, 0
@@ -47,7 +54,7 @@ fireball
   index: -1
 goomba
   rotate: false
-  xy: 259, 77
+  xy: 389, 77
   size: 48, 16
   orig: 48, 16
   offset: 0, 0
