@@ -80,7 +80,7 @@ public class PlayScreen implements Screen {
         music.setLooping(true);
         music.play();
         trasition=false;
-       // st=new ScreenTransition()
+        // st=new ScreenTransition()
         img=GifDecoder.loadGIFAnimation(Animation.PlayMode.LOOP, Gdx.files.internal("you.gif").read());
         vp = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         delta=0;
@@ -95,7 +95,6 @@ public class PlayScreen implements Screen {
 
         world.step(1 / 60f, 6, 2);
         actor.update(dt);
-        hud.update(dt);
         gameCam.position.x = actor.body.getPosition().x;
 
         for(Enemy enemy: b2wc.getEnemies()){
