@@ -50,6 +50,7 @@ public class Hud implements Disposable {
         stage.addActor(table);
     }
 
+
     public void update(float dt){
         timeCount += dt;
         if(timeCount >= 1){

@@ -55,7 +55,7 @@ public class Deathcap extends Enemy{
         fdef.filter.categoryBits=RunGame.ENEMY_BIT;//vat the
         fdef.filter.maskBits=RunGame.GROUND_BIT |RunGame.BRICK_BIT|RunGame.COIN_BIT|RunGame.ENEMY_BIT|RunGame.OBJECT_BIT|RunGame.ACTOR_BIT;//cac vat the co the va cham
 
-       b2body.createFixture(fdef).setUserData(this);
+        b2body.createFixture(fdef).setUserData(this);
 
         //create the head dof w=enemy
         PolygonShape head =new PolygonShape();
@@ -80,7 +80,7 @@ public class Deathcap extends Enemy{
             case WALKING:
                 region=walkAnimation.getKeyFrame(stateTime,true);
                 break;
-             case SMASH:
+            case SMASH:
                 region=smashAnimation.getKeyFrame(stateTime);
                 break;
             default:
@@ -105,15 +105,15 @@ public class Deathcap extends Enemy{
             world.destroyBody(b2body);
         }
 
-            setRegion(getFrame(dt));
-            setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
-            b2body.setLinearVelocity(velocity);
+        setRegion(getFrame(dt));
+        setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
+        b2body.setLinearVelocity(velocity);
 
     }
-public  void draw(Batch batch){
+    public  void draw(Batch batch){
         if(!destroyed)super.draw(batch);
         else if(stateTime<1)super.draw(batch);
-}
+    }
     @Override
     public void hitOnHead(Actor mario) {
         setToDestroy=true;
