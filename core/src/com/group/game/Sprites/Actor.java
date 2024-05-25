@@ -27,7 +27,7 @@ public class Actor extends Sprite {
     private boolean posi;
     //private TextureRegion stand;
     public Actor(World world, PlayScreen screen){
-        super(screen.getAtlas().findRegion("little_mario"));
+        super(screen.getAtlas().findRegion("fox-each"));
         this.world = world;
         currState = State.STANDING;
         prevState = State.STANDING;
@@ -35,31 +35,31 @@ public class Actor extends Sprite {
         getRight = true;
 
         Array<TextureRegion> ani = new Array<TextureRegion>();
-        for(int i = 1; i < 4; i++){
-            //ani.add(new TextureRegion(screen.getAtlas().findRegion("little_mario"),16*i,0,16,16));
-            ani.add(new TextureRegion(getTexture(), i*16, 10, 16,16));
+        for(int i = 0; i < 4; i++){
+            ani.add(new TextureRegion(screen.getAtlas().findRegion("fox-each"),32*i,8,32,36));
+            //ani.add(new TextureRegion(getTexture(), i*16, 10, 16,16));
         }
         aRun = new Animation<TextureRegion>(0.1f, ani);
         ani.clear();
 
-        for(int i = 4; i < 6; i++){
-            //ani.add(new TextureRegion(screen.getAtlas().findRegion("little_mario"),16*i,0,16,16));
-            ani.add(new TextureRegion(getTexture(), i*16, 10, 16,16));
+        for(int i = 0; i < 4; i++){
+            ani.add(new TextureRegion(screen.getAtlas().findRegion("fox-each"),32*i,8,32,36));
+            //ani.add(new TextureRegion(getTexture(), i*16, 10, 16,16));
         }
         aJump = new Animation<TextureRegion>(0.1f, ani);
 
-        //aStand = new TextureRegion(screen.getAtlas().findRegion("little_mario"),0,0,16,16);
-        aStand = new TextureRegion(getTexture(),0,10,16,16);
+        aStand = new TextureRegion(screen.getAtlas().findRegion("fox-each"),0,8,32,36);
+        //aStand = new TextureRegion(getTexture(),0,10,16,16);
 
         buildActor();
 
-        setBounds(16,16,16/RunGame.RSF, 16/RunGame.RSF);
+        setBounds(32,32,32/RunGame.RSF, 32/RunGame.RSF);
         setRegion(aStand);
         posi=false;
     }
     private void buildActor(){
         BodyDef bdf = new BodyDef();
-        bdf.position.set(32/RunGame.RSF, 32/RunGame.RSF);
+        bdf.position.set(32/RunGame.RSF,32/RunGame.RSF);
         bdf.type = BodyDef.BodyType.DynamicBody;
         body = world.createBody(bdf);
 
@@ -84,7 +84,7 @@ public class Actor extends Sprite {
     }
 
     public void update(float deltatime){
-       // System.out.println(getX()+" "+getY());
+        // System.out.println(getX()+" "+getY());
         if(posi)body.setTransform(15.616586f ,0.30499923f, body.getAngle());
         setPosition(body.getPosition().x - getWidth()/2, body.getPosition().y - getHeight()/2);
         setRegion(getFrame(deltatime));
@@ -95,6 +95,8 @@ public class Actor extends Sprite {
 
         switch(currState){
             case STANDING:
+                t_region = aStand;
+                break;
             case JUMPING:
                 t_region = (TextureRegion) aJump.getKeyFrame(timeofState);
                 break;

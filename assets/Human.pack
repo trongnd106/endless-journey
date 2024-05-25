@@ -3,39 +3,32 @@ Human.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-big_mario
-  rotate: false
-  xy: 1, 95
-  size: 336, 32
-  orig: 336, 32
-  offset: 0, 0
-  index: -1
-guido
+fox-each
   rotate: false
   xy: 1, 29
-  size: 256, 64
-  orig: 256, 64
-  offset: 0, 0
-  index: -1
-little_mario
-  rotate: false
-  xy: 1, 11
-  size: 224, 16
-  orig: 224, 16
+  size: 128, 32
+  orig: 128, 32
   offset: 0, 0
   index: -1
 deathcap
   rotate: false
-  xy: 339, 111
+  xy: 1, 11
   size: 128, 16
   orig: 128, 16
   offset: 0, 0
   index: -1
 turtle
   rotate: false
-  xy: 339, 85
+  xy: 131, 37
   size: 96, 24
   orig: 96, 24
+  offset: 0, 0
+  index: -1
+goomba
+  rotate: false
+  xy: 131, 19
+  size: 48, 16
+  orig: 48, 16
   offset: 0, 0
   index: -1
 fireball
@@ -45,16 +38,9 @@ fireball
   orig: 32, 8
   offset: 0, 0
   index: -1
-goomba
-  rotate: false
-  xy: 259, 77
-  size: 48, 16
-  orig: 48, 16
-  offset: 0, 0
-  index: -1
 mushroom
   rotate: false
-  xy: 227, 11
+  xy: 229, 45
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
