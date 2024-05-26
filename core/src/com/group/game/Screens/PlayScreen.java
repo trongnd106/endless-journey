@@ -265,7 +265,7 @@ public class PlayScreen implements Screen {
     }
 
     public boolean gameOver(){
-        if((actor.currState == Actor.State.DEAD && actor.getTimeofState() > 3) || isOut){
+        if((actor.currState == Actor.State.DEAD && actor.getTimeofState() > 1) || isOut){
             RunGame.manager.get("music/battleThemeA.mp3", Music.class).stop();
             return true;
         }
