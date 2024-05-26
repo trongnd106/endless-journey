@@ -16,16 +16,22 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.group.game.RunGame;
 import com.group.game.Scenes.Hud;
 import com.group.game.Sprites.Actor;
+import com.group.game.Sprites.Items.Item;
+import com.group.game.Sprites.Items.ItemDefine;
+import com.group.game.Sprites.Items.Mushroom;
 import com.group.game.Tools.B2WorldCreator;
 import com.group.game.Tools.WorldContactListener;
 import com.group.game.Transition.ScreenTransition;
 import com.group.game.enemies.Enemy;
 import com.group.game.enemies.FireBall;
+
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class PlayScreen implements Screen {
     private RunGame game;
@@ -48,10 +54,15 @@ public class PlayScreen implements Screen {
     private Viewport vp;
     private FireBall fireBall;
     private float delta;
+
     private Texture texture,loud,mute;
     private int speaker;
     private int OffsetBackground;
 
+
+    // them bien Item
+    private Array<Item> items;
+    private LinkedBlockingQueue<ItemDefine> itemsToSpawn;
     public PlayScreen(RunGame game){
         this.game = game;
 
@@ -83,18 +94,22 @@ public class PlayScreen implements Screen {
 
             music.play();
 
-  
+
         trasition=false;
         // st=new ScreenTransition()
        // img=GifDecoder.loadGIFAnimation(Animation.PlayMode.LOOP, Gdx.files.internal("you.gif").read());
         vp = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         delta=0;
+
         texture=new Texture("forest-game-background-free-vector.jpg");
         loud=new Texture("Ảnh chụp màn hình 2024-05-26 211237.png");
         mute=new Texture("Ảnh chụp màn hình 2024-05-26 214333.png");
 
 
         OffsetBackground=0;
+        // tao mang item va hang doi itemtosqawm
+        items=new Array<Item>();
+        itemsToSpawn= new LinkedBlockingQueue<ItemDefine>();
     }
     public void setVolume(){
         if(speaker==1) {
@@ -102,6 +117,7 @@ public class PlayScreen implements Screen {
 
         }
         else music.stop();
+
     }
     @Override
     public void show() {
@@ -109,7 +125,8 @@ public class PlayScreen implements Screen {
     }
     public void update(float dt){
         handleInput(dt);
-
+        //sqawningitem
+        handleSpawningItems();
         world.step(1 / 60f, 6, 2);
         actor.update(dt);
         gameCam.position.x = actor.body.getPosition().x;
@@ -119,6 +136,10 @@ public class PlayScreen implements Screen {
             if (enemy.getX() < actor.getX() + 14 * 16 / RunGame.RSF) {
                 enemy.b2body.setActive(true);//wake up
             }
+        }
+        // update item
+        for(Item item:items){
+            item.update(dt);
         }
         gameCam.update();
 
@@ -176,6 +197,10 @@ public class PlayScreen implements Screen {
         for(Enemy enemy:b2wc.getEnemies()){
             enemy.draw(game.batch);
         }
+        // render item
+        for(Item item:items){
+            item.draw(game.batch);
+        }
         game.batch.end();
 
 
@@ -216,5 +241,17 @@ public class PlayScreen implements Screen {
     @Override
     public void dispose() {
 
+    }
+
+    public void spawnItem(ItemDefine itemDef) {
+        itemsToSpawn.add(itemDef);
+    }
+    public void handleSpawningItems(){
+        if(!itemsToSpawn.isEmpty()){
+            ItemDefine itemdef=itemsToSpawn.poll();//like pop
+            if(itemdef.type == Mushroom.class){
+                items.add(new Mushroom(this,itemdef.position.x,itemdef.position.y));
+            }
+        }
     }
 }

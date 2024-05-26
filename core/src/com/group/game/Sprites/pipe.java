@@ -13,9 +13,8 @@ import com.group.game.Tools.B2WorldCreator;
 import com.group.game.enemies.FireBall;
 
 public class pipe extends InteractiveObject {
-    private MapObject object;
-    public pipe(World world, TiledMap map, Rectangle bounds,MapObject object) {
-        super(world, map, bounds);
+    public pipe(PlayScreen screen, MapObject object) {
+        super(screen,object);// sua dau vao
         this.object=object;
         fixture.setUserData(this);
         setCatergoryFilter(RunGame.OBJECT_BIT);
@@ -31,7 +30,7 @@ public class pipe extends InteractiveObject {
     }
 
     @Override
-    public void onHeadHit(Actor mario) {
+    public void onHeadHit(Actor actor) {
         if(object.getProperties().containsKey("gate")){
 
         }

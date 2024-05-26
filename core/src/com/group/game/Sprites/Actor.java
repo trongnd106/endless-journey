@@ -80,7 +80,7 @@ public class Actor extends Sprite {
         fdf.shape = head;
         // is sensor ? no longer collide with anything
         fdf.isSensor = true;
-        body.createFixture(fdf).setUserData("head");
+        body.createFixture(fdf).setUserData(this);
     }
 
     public void update(float deltatime){
