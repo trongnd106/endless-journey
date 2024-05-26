@@ -58,7 +58,7 @@ public class Actor extends Sprite {
 
         setBounds(32,32,32/RunGame.RSF, 32/RunGame.RSF);
         setRegion(aStand);
-        chet=false;
+        aIsDead=false;
     }
     private void buildActor(){
         BodyDef bdf = new BodyDef();
@@ -89,7 +89,7 @@ public class Actor extends Sprite {
     public void update(float deltatime){
 
        // System.out.println(getX()+" "+getY());
-        if(getY()<0)died();
+        if(getY()<0)die();
 
 
         setPosition(body.getPosition().x - getWidth()/2, body.getPosition().y - getHeight()/2);
@@ -177,7 +177,7 @@ public class Actor extends Sprite {
             ((Turtle)enemy).kick(this.getX()<enemy.getX()?Turtle.KICK_RIGHT_SPEED:Turtle.KICK_LEFT_SPEED);
         }
         else{
-
+            die();
         }
     }
 
