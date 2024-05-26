@@ -15,14 +15,7 @@ public class WorldContactListener implements ContactListener {//duoc goi tu
         Fixture fixB= contact.getFixtureB();
         int cDef=fixA.getFilterData().categoryBits|fixB.getFilterData().categoryBits;
 
-//        if(fixA.getUserData()=="head"||fixB.getUserData()=="head"){
-//            Fixture head=fixA.getUserData()=="head"?fixA:fixB;
-//            Fixture object=fixA.getUserData()!="head"?fixA:fixB;
-//
-////            if(object.getUserData()!=null&& InteractiveObject.class.isAssignableFrom(object.getUserData().getClass())){
-////                ((InteractiveObject)object.getUserData()).onHeadHit();
-////            }
-//      }
+
 
         switch(cDef){
             //va cham giua actor vs brick, coin
