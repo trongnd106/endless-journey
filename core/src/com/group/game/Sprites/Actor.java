@@ -176,10 +176,10 @@ public class Actor extends Sprite {
         if(enemy instanceof Turtle && ((Turtle) enemy).getCurrentState()==Turtle.State.STANDING_SHELL){
             ((Turtle)enemy).kick(this.getX()<enemy.getX()?Turtle.KICK_RIGHT_SPEED:Turtle.KICK_LEFT_SPEED);
         }
+        else{
 
-        else {
-            die();
         }
+    }
 
     public State getCurrState() {
         return currState;
