@@ -10,6 +10,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.utils.Array;
 import com.group.game.RunGame;
+import com.group.game.Scenes.Hud;
 import com.group.game.Screens.PlayScreen;
 import com.group.game.Sprites.Actor;
 
@@ -117,6 +118,8 @@ public class Deathcap extends Enemy{
     @Override
     public void hitOnHead(Actor mario) {
         setToDestroy=true;
+        // them tinh diem
+        Hud.addScore(100);
     }
 
     @Override
