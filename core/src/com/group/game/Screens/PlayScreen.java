@@ -63,6 +63,11 @@ public class PlayScreen implements Screen {
     // them bien Item
     private Array<Item> items;
     private LinkedBlockingQueue<ItemDefine> itemsToSpawn;
+
+    private float previousPositionY ,cnt,curr;
+
+
+
     public PlayScreen(RunGame game){
         this.game = game;
 
@@ -101,6 +106,7 @@ public class PlayScreen implements Screen {
         vp = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         delta=0;
 
+
         texture=new Texture("forest-game-background-free-vector.jpg");
         loud=new Texture("Ảnh chụp màn hình 2024-05-26 211237.png");
         mute=new Texture("Ảnh chụp màn hình 2024-05-26 214333.png");
@@ -118,6 +124,10 @@ public class PlayScreen implements Screen {
         }
         else music.stop();
 
+
+        previousPositionY=actor.getY();
+        curr=cnt=0;
+
     }
     @Override
     public void show() {
@@ -125,8 +135,10 @@ public class PlayScreen implements Screen {
     }
     public void update(float dt){
         handleInput(dt);
+
         //sqawningitem
         handleSpawningItems();
+
         world.step(1 / 60f, 6, 2);
         actor.update(dt);
         gameCam.position.x = actor.body.getPosition().x;
@@ -150,8 +162,10 @@ public class PlayScreen implements Screen {
 
     // xử lí sự kiện đầu vào click,press
     public void handleInput(float dt){
-        if(Gdx.input.isKeyJustPressed(Input.Keys.UP))
-            actor.body.applyLinearImpulse(new Vector2(0,3f), actor.body.getWorldCenter(), true);
+        if(Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
+
+             actor.body.applyLinearImpulse(new Vector2(0, 3f), actor.body.getWorldCenter(), true);
+        }
 
         if(Gdx.input.isKeyPressed(Input.Keys.RIGHT) && actor.body.getLinearVelocity().x <= 2)
             actor.body.applyLinearImpulse(new Vector2(0.1f, 0), actor.body.getWorldCenter(), true);
