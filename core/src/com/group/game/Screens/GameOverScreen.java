@@ -54,7 +54,7 @@ public class GameOverScreen implements Screen {
         // Tạo style cho Label
         Label.LabelStyle font = new Label.LabelStyle();
         font.font = new BitmapFont();
-        font.fontColor = Color.WHITE;
+        font.fontColor = new Color(0.8f, 1f, 0.7f, 1f);
 
         // Tạo Label "GAME OVER"
         Label gameOverLabel = new Label("GAME OVER", font);
