@@ -101,6 +101,7 @@ public class PlayScreen implements Screen {
 
         world.step(1 / 60f, 6, 2);
         actor.update(dt);
+        hud.update(dt);
 
         if (actor.body.getPosition().y < -10) {
             isOut = true;
@@ -169,6 +170,7 @@ public class PlayScreen implements Screen {
         actor.draw(game.batch);
 
         hud.scorelb.setText(String.format("%06d", score));
+        hud.countimelb.setText(String.format("%02d:%02d", hud.minutes, hud.seconds));
 
         for(Enemy enemy:b2wc.getEnemies()){
             enemy.draw(game.batch);
