@@ -1,5 +1,7 @@
 package com.group.game.Sprites;
 
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -12,7 +14,7 @@ import com.group.game.enemies.Enemy;
 import com.group.game.enemies.Turtle;
 
 public class Actor extends Sprite {
-    public enum State {STANDING, JUMPING, RUNNING, FALLING, DEATH}
+    public enum State {STANDING, JUMPING, RUNNING, FALLING, DEAD}
     public State currState;
     public State prevState;
     private Animation<TextureRegion> aRun;
@@ -21,6 +23,7 @@ public class Actor extends Sprite {
     private TextureRegion aStand;
     private boolean getRight;
     private float timeofState;
+    private boolean aIsDead;
 
     private World world;
     public Body body;
@@ -50,7 +53,7 @@ public class Actor extends Sprite {
 
         aStand = new TextureRegion(screen.getAtlas().findRegion("fox-each"),0,8,32,36);
         //aStand = new TextureRegion(getTexture(),0,10,16,16);
-
+        aDead = new TextureRegion(screen.getAtlas().findRegion("fox-each"), 16, 0, 32, 36);
         buildActor();
 
         setBounds(32,32,32/RunGame.RSF, 32/RunGame.RSF);
@@ -106,6 +109,9 @@ public class Actor extends Sprite {
             case RUNNING:
                 t_region = (TextureRegion) aRun.getKeyFrame(timeofState, true);
                 break;
+            case DEAD:
+                t_region = aDead;
+                break;
             case FALLING:
             default:
                 t_region = aStand;
@@ -123,7 +129,9 @@ public class Actor extends Sprite {
         return t_region;
     }
     public State getState(){
-        if(body.getLinearVelocity().x != 0)
+        if(aIsDead)
+            return State.DEAD;
+        else if(body.getLinearVelocity().x != 0)
             return State.RUNNING;
         else if(body.getLinearVelocity().y > 0 || (body.getLinearVelocity().y < 0 ))
             return State.JUMPING;
@@ -141,14 +149,37 @@ public class Actor extends Sprite {
             getRight = true;
         }
     }
+    public void die() {
+
+        if (!isDead()) {
+            //RunGame.manager.get("audio/music/music.ogg", Music.class).stop();
+            //RunGame.manager.get("audio/sounds/die.wav", Sound.class).play();
+            aIsDead = true;
+            Filter filter = new Filter();
+            filter.maskBits = RunGame.NOTHING_BIT;
+
+            for (Fixture fixture : body.getFixtureList()) {
+                fixture.setFilterData(filter);
+            }
+
+            body.applyLinearImpulse(new Vector2(0, 4f), body.getWorldCenter(), true);
+        }
+    }
+    public boolean isDead(){
+        return aIsDead;
+    }
+
+    public float getTimeofState(){
+        return timeofState;
+    }
     public void hit(Enemy enemy){
         if(enemy instanceof Turtle && ((Turtle) enemy).getCurrentState()==Turtle.State.STANDING_SHELL){
             ((Turtle)enemy).kick(this.getX()<enemy.getX()?Turtle.KICK_RIGHT_SPEED:Turtle.KICK_LEFT_SPEED);
         }
-        else{
 
+        else {
+            die();
         }
-    }
 
     public State getCurrState() {
         return currState;

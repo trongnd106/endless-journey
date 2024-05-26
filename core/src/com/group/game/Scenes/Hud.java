@@ -17,16 +17,20 @@ import com.group.game.RunGame;
 public class Hud implements Disposable {
     public Stage stage;
     private Integer worldTimer;
+    public Integer minutes;
+    public Integer seconds;
     private float timeCount;
     private static Integer score;
     private Viewport viewport;
     private OrthographicCamera cam;
-    private Label countimelb;
-    private static Label scorelb;
+    public Label countimelb;
+    public static Label scorelb;
     private Label manlb;
     private Label timelb;
     public Hud(SpriteBatch sb){
         worldTimer = 0; timeCount = 0; score = 0;
+        minutes = 0;
+        seconds = 0;
         cam = new OrthographicCamera();
         viewport = new FitViewport(RunGame.WIDTH, RunGame.HEIGHT, cam);
         stage = new Stage(viewport, sb);
@@ -35,10 +39,12 @@ public class Hud implements Disposable {
         table.top();
         table.setFillParent(true);
 
-        countimelb = new Label(String.format("%06d", worldTimer), new Label.LabelStyle(new BitmapFont(), Color.BLUE));
-        scorelb =new Label(String.format("%06d", score), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-        timelb = new Label("TIME", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-        manlb = new Label("SCORE", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+
+        countimelb = new Label(String.format("%02d:%02d", minutes, seconds), new Label.LabelStyle(new BitmapFont(), new Color(0.7f, 0.7f, 1f, 1f)));
+        scorelb =new Label(String.format("%06d", score), new Label.LabelStyle(new BitmapFont(), new Color(0.7f, 0.7f, 1f, 1f)));
+        timelb = new Label("TIME", new Label.LabelStyle(new BitmapFont(), Color.BROWN));
+        manlb = new Label("SCORE", new Label.LabelStyle(new BitmapFont(), Color.BROWN));
+
 
         //add our labels to our table, padding the top, and giving them all equal width with expandX
         table.add(manlb).expandX().padTop(10);
@@ -51,12 +57,19 @@ public class Hud implements Disposable {
     }
 
 
+    public void updateScore(int score) {
+        scorelb.setText(String.format("%06d", score));
+    }
     public void update(float dt){
         timeCount += dt;
         if(timeCount >= 1){
-                worldTimer++;
-            countimelb.setText(String.format("%06d", worldTimer));
-            timeCount = 0; //?
+            seconds++;
+            if (seconds >= 60) {
+                minutes++;
+                seconds = 0;
+            }
+            countimelb.setText(String.format("%02d:%02d", minutes, seconds));
+            timeCount = 0;
         }
     }
 

@@ -30,6 +30,7 @@ import com.group.game.Tools.WorldContactListener;
 import com.group.game.Transition.ScreenTransition;
 import com.group.game.enemies.Enemy;
 import com.group.game.enemies.FireBall;
+import com.group.game.enemies.Turtle;
 
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -54,6 +55,13 @@ public class PlayScreen implements Screen {
     private Viewport vp;
     private FireBall fireBall;
     private float delta;
+    private int score;
+    private boolean isOut;
+
+
+    public int getScore() {
+        return score;
+    }
 
     private Texture texture,loud,mute;
     private int speaker;
@@ -141,6 +149,14 @@ public class PlayScreen implements Screen {
 
         world.step(1 / 60f, 6, 2);
         actor.update(dt);
+        hud.update(dt);
+
+        if (actor.body.getPosition().y < -10) {
+            isOut = true;
+        }
+        // Cập nhật điểm số
+        score = (int) (actor.body.getPosition().x * 10);
+
         gameCam.position.x = actor.body.getPosition().x;
 
         for(Enemy enemy: b2wc.getEnemies()){
@@ -149,10 +165,19 @@ public class PlayScreen implements Screen {
                 enemy.b2body.setActive(true);//wake up
             }
         }
+
+
+        //attach our gamecam to our players.x coordinate
+        if(actor.currState != Actor.State.DEAD) {
+            gameCam.position.x = actor.body.getPosition().x;
+        }
+
+
         // update item
         for(Item item:items){
             item.update(dt);
         }
+
         gameCam.update();
 
         renderer.setView(gameCam);
@@ -162,16 +187,24 @@ public class PlayScreen implements Screen {
 
     // xử lí sự kiện đầu vào click,press
     public void handleInput(float dt){
+
+        if(actor.currState != Actor.State.DEAD){
+            if(Gdx.input.isKeyJustPressed(Input.Keys.UP))
+                actor.body.applyLinearImpulse(new Vector2(0,3f), actor.body.getWorldCenter(), true);
+
+            if(Gdx.input.isKeyPressed(Input.Keys.RIGHT) && actor.body.getLinearVelocity().x <= 2)
+                actor.body.applyLinearImpulse(new Vector2(0.1f, 0), actor.body.getWorldCenter(), true);
+
         if(Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
 
              actor.body.applyLinearImpulse(new Vector2(0, 3f), actor.body.getWorldCenter(), true);
         }
 
-        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT) && actor.body.getLinearVelocity().x <= 2)
-            actor.body.applyLinearImpulse(new Vector2(0.1f, 0), actor.body.getWorldCenter(), true);
 
-        if(Gdx.input.isKeyPressed(Input.Keys.LEFT) && actor.body.getLinearVelocity().x >= -2)
-            actor.body.applyLinearImpulse(new Vector2(-0.1f, 0), actor.body.getWorldCenter(), true);
+            if(Gdx.input.isKeyPressed(Input.Keys.LEFT) && actor.body.getLinearVelocity().x >= -2)
+                actor.body.applyLinearImpulse(new Vector2(-0.1f, 0), actor.body.getWorldCenter(), true);
+        }
+
     }
 
     public TiledMap getMap(){
@@ -208,6 +241,9 @@ public class PlayScreen implements Screen {
         game.batch.begin();
         actor.draw(game.batch);
 
+        hud.scorelb.setText(String.format("%06d", score));
+        hud.countimelb.setText(String.format("%02d:%02d", hud.minutes, hud.seconds));
+
         for(Enemy enemy:b2wc.getEnemies()){
             enemy.draw(game.batch);
         }
@@ -220,6 +256,20 @@ public class PlayScreen implements Screen {
 
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
         hud.stage.draw();
+
+        if(gameOver()){
+            game.setScreen(new GameOverScreen(game));
+            dispose();
+        }
+
+    }
+
+    public boolean gameOver(){
+        if((actor.currState == Actor.State.DEAD && actor.getTimeofState() > 3) || isOut){
+            RunGame.manager.get("music/battleThemeA.mp3", Music.class).stop();
+            return true;
+        }
+        return false;
     }
 
     public TextureAtlas getAtlas(){
