@@ -5,6 +5,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.group.game.RunGame;
+import com.group.game.Scenes.Hud;
 import com.group.game.Screens.PlayScreen;
 import com.group.game.Sprites.Actor;
 
@@ -49,6 +50,7 @@ public class Mushroom extends Item {
         destroy();//va cham goi destroy set destroyed=true then update function is gonna destroy
         setPosition(body.getPosition().x-getWidth()/2,body.getPosition().y-getHeight()/2);
         body.setLinearVelocity(velocity);
+        Hud.addScore(100);
     }
     public void reverseVelocity(boolean x,boolean y){
         if(x)velocity.x=-velocity.x;

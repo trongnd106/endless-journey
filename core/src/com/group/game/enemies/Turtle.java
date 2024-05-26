@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.group.game.RunGame;
+import com.group.game.Scenes.Hud;
 import com.group.game.Screens.PlayScreen;
 import com.group.game.Sprites.Actor;
 import com.group.game.Tools.B2WorldCreator;
@@ -71,10 +72,17 @@ public class Turtle extends Enemy{
     @Override
     public void onEnemyHit(Enemy enemy) {
         if(enemy instanceof Turtle){
-            if(((Turtle)enemy).currentState==State.MOVING_SHELL&&currentState!=State.MOVING_SHELL){//2 con rua collision
+            if(((Turtle)enemy).currentState==State.MOVING_SHELL&&currentState!=State.MOVING_SHELL) {//2 con rua collision
                 this.killed();
             }
-            else if( currentState!=State.MOVING_SHELL&&((Turtle)enemy).currentState==State.WALKING)return;
+           else if(((Turtle)enemy).currentState==State.MOVING_SHELL&&currentState==State.MOVING_SHELL) {
+                ((Turtle)enemy).killed();
+                this.killed();
+            }
+            else if( currentState==State.WALKING&&((Turtle)enemy).currentState==State.WALKING){
+                reverseVelocity(true,false);
+                ((Turtle)enemy).setVelocity(new Vector2(0f,0f));
+            }
             else {
                 reverseVelocity(true,false);
                 ((Turtle)enemy).reverseVelocity(true,false);
@@ -84,7 +92,9 @@ public class Turtle extends Enemy{
             reverseVelocity(true,false);
         }
     }
-
+public void setVelocity(Vector2 a){
+    b2body.setLinearVelocity(a);
+}
     public TextureRegion getFrame(float dt){
         TextureRegion region;
 
@@ -136,6 +146,8 @@ public class Turtle extends Enemy{
         if(currentState!=State.STANDING_SHELL){
             currentState=State.STANDING_SHELL;
             velocity.x=0;
+            // them tinh diem
+            Hud.addScore(100);
         }
         else kick(mario.getX()<=this.getX()?KICK_RIGHT_SPEED:KICK_LEFT_SPEED);
     }

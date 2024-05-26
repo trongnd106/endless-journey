@@ -39,10 +39,12 @@ public class Hud implements Disposable {
         table.top();
         table.setFillParent(true);
 
+
         countimelb = new Label(String.format("%02d:%02d", minutes, seconds), new Label.LabelStyle(new BitmapFont(), new Color(0.7f, 0.7f, 1f, 1f)));
         scorelb =new Label(String.format("%06d", score), new Label.LabelStyle(new BitmapFont(), new Color(0.7f, 0.7f, 1f, 1f)));
         timelb = new Label("TIME", new Label.LabelStyle(new BitmapFont(), Color.BROWN));
         manlb = new Label("SCORE", new Label.LabelStyle(new BitmapFont(), Color.BROWN));
+
 
         //add our labels to our table, padding the top, and giving them all equal width with expandX
         table.add(manlb).expandX().padTop(10);

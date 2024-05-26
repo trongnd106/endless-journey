@@ -27,7 +27,7 @@ public class Actor extends Sprite {
 
     private World world;
     public Body body;
-    private boolean posi;
+    private boolean chet;
     //private TextureRegion stand;
     public Actor(World world, PlayScreen screen){
         super(screen.getAtlas().findRegion("fox-each"));
@@ -58,7 +58,7 @@ public class Actor extends Sprite {
 
         setBounds(32,32,32/RunGame.RSF, 32/RunGame.RSF);
         setRegion(aStand);
-        posi=false;
+        chet=false;
     }
     private void buildActor(){
         BodyDef bdf = new BodyDef();
@@ -83,12 +83,15 @@ public class Actor extends Sprite {
         fdf.shape = head;
         // is sensor ? no longer collide with anything
         fdf.isSensor = true;
-        body.createFixture(fdf).setUserData("head");
+        body.createFixture(fdf).setUserData(this);
     }
 
     public void update(float deltatime){
-        // System.out.println(getX()+" "+getY());
-        if(posi)body.setTransform(15.616586f ,0.30499923f, body.getAngle());
+
+       // System.out.println(getX()+" "+getY());
+        if(getY()<0)died();
+
+
         setPosition(body.getPosition().x - getWidth()/2, body.getPosition().y - getHeight()/2);
         setRegion(getFrame(deltatime));
     }
@@ -130,7 +133,7 @@ public class Actor extends Sprite {
             return State.DEAD;
         else if(body.getLinearVelocity().x != 0)
             return State.RUNNING;
-        else if(body.getLinearVelocity().y > 0 || (body.getLinearVelocity().y < 0 && prevState == State.JUMPING))
+        else if(body.getLinearVelocity().y > 0 || (body.getLinearVelocity().y < 0 ))
             return State.JUMPING;
         else if(body.getLinearVelocity().y < 0)
             return State.FALLING;
@@ -173,11 +176,21 @@ public class Actor extends Sprite {
         if(enemy instanceof Turtle && ((Turtle) enemy).getCurrentState()==Turtle.State.STANDING_SHELL){
             ((Turtle)enemy).kick(this.getX()<enemy.getX()?Turtle.KICK_RIGHT_SPEED:Turtle.KICK_LEFT_SPEED);
         }
+
         else {
             die();
         }
+
+    public State getCurrState() {
+        return currState;
     }
-    public void in(){
-        posi=true;
+    public void died(){
+        chet=true;
+        Filter filter = new Filter();
+        filter.maskBits = RunGame.NOTHING_BIT;
+        for (Fixture fixture : body.getFixtureList()) {
+            fixture.setFilterData(filter);
+        }
+        body.applyLinearImpulse(new Vector2(0, 2f), body.getWorldCenter(), false);
     }
 }
