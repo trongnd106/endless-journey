@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.group.game.RunGame;
+import com.group.game.Scenes.Hud;
 import com.group.game.Screens.PlayScreen;
 import com.group.game.Sprites.Actor;
 import com.group.game.Tools.B2WorldCreator;
@@ -136,6 +137,8 @@ public class Turtle extends Enemy{
         if(currentState!=State.STANDING_SHELL){
             currentState=State.STANDING_SHELL;
             velocity.x=0;
+            // them tinh diem
+            Hud.addScore(100);
         }
         else kick(mario.getX()<=this.getX()?KICK_RIGHT_SPEED:KICK_LEFT_SPEED);
     }
