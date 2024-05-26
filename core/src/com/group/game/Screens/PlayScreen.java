@@ -29,7 +29,6 @@ import com.group.game.enemies.FireBall;
 
 public class PlayScreen implements Screen {
     private RunGame game;
-    private Texture texture;
     private Viewport gamePort;
     private OrthographicCamera  gameCam;
     private TmxMapLoader loader;
@@ -49,13 +48,15 @@ public class PlayScreen implements Screen {
     private Viewport vp;
     private FireBall fireBall;
     private float delta;
+    private Texture texture,loud,mute;
+    private int speaker;
+    private int OffsetBackground;
 
     public PlayScreen(RunGame game){
         this.game = game;
 
         gameCam = new OrthographicCamera();
         gamePort = new FitViewport(game.WIDTH / game.RSF, game.HEIGHT / game.RSF, gameCam);
-
         atlas = new TextureAtlas("Human.pack");
         hud = new Hud(game.batch);
 
@@ -76,20 +77,36 @@ public class PlayScreen implements Screen {
         world.setContactListener(new WorldContactListener());
 
         // get music
+        speaker=1;
         music = RunGame.manager.get("music/battleThemeA.mp3", Music.class);
         music.setLooping(true);
-        music.play();
+
+            music.play();
+
+  
         trasition=false;
         // st=new ScreenTransition()
-        img=GifDecoder.loadGIFAnimation(Animation.PlayMode.LOOP, Gdx.files.internal("you.gif").read());
+       // img=GifDecoder.loadGIFAnimation(Animation.PlayMode.LOOP, Gdx.files.internal("you.gif").read());
         vp = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         delta=0;
+        texture=new Texture("forest-game-background-free-vector.jpg");
+        loud=new Texture("Ảnh chụp màn hình 2024-05-26 211237.png");
+        mute=new Texture("Ảnh chụp màn hình 2024-05-26 214333.png");
+
+
+        OffsetBackground=0;
+    }
+    public void setVolume(){
+        if(speaker==1) {
+            music.play();
+
+        }
+        else music.stop();
     }
     @Override
     public void show() {
 
     }
-
     public void update(float dt){
         handleInput(dt);
 
@@ -106,6 +123,7 @@ public class PlayScreen implements Screen {
         gameCam.update();
 
         renderer.setView(gameCam);
+        setVolume();
         delta+=dt;
     }
 
@@ -133,8 +151,17 @@ public class PlayScreen implements Screen {
         update(dt);
         Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        if(Gdx.input.justTouched()){
+           if(check(Gdx.input.getX(),Gdx.input.getY())!=-1) speaker=check(Gdx.input.getX(),Gdx.input.getY());
+        }
         game.batch.begin();
-        game.batch.draw(img.getKeyFrame(delta), 0, 0f);
+        OffsetBackground++;
+        if(OffsetBackground%RunGame.WIDTH==0)OffsetBackground=0;
+        game.batch.draw(texture, -OffsetBackground, 0f,RunGame.WIDTH,RunGame.HEIGHT);
+        game.batch.draw(texture, RunGame.WIDTH-OffsetBackground, 0f,RunGame.WIDTH,RunGame.HEIGHT);
+        if(speaker==1)game.batch.draw(loud,RunGame.WIDTH/15,RunGame.HEIGHT/10*8+10,25,25);
+        else if(speaker==0)game.batch.draw(mute,RunGame.WIDTH/15,RunGame.HEIGHT/10*8+10,25,25);
+
         game.batch.end();
         renderer.render();
 
@@ -159,7 +186,13 @@ public class PlayScreen implements Screen {
     public TextureAtlas getAtlas(){
         return atlas;
     }
-
+    public int check(int x,int y){
+        if( x>=246&&x<405&&y>92&&y<248){
+            if(speaker==1)return 0;
+            else return 1;
+        }
+        return -1;
+    }
     @Override
     public void resize(int width, int height) {
         gamePort.update(width,height);
