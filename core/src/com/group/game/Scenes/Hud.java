@@ -22,7 +22,7 @@ public class Hud implements Disposable {
     private Viewport viewport;
     private OrthographicCamera cam;
     private Label countimelb;
-    private static Label scorelb;
+    public static Label scorelb;
     private Label manlb;
     private Label timelb;
     public Hud(SpriteBatch sb){
@@ -51,6 +51,9 @@ public class Hud implements Disposable {
     }
 
 
+    public void updateScore(int score) {
+        scorelb.setText(String.format("%06d", score));
+    }
     public void update(float dt){
         timeCount += dt;
         if(timeCount >= 1){
