@@ -1,0 +1,96 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+package Screens{
+class PlayScreen implements Screen
+class Menu implements Screen
+class GameOverScreen implements Screen
+class PlayScreen{
+- game: RunGame
+- gamePort: Viewport
+- gameCam: OrthographicCamera
+- loader: TmxMapLoader
+- map: TiledMap
+- atlas: TextureAtlas
+- renderer: OrthogonalTiledMapRenderer
+- music: Music
+- world: World
+- b2dr: Box2DDebugRenderer
+- b2wc: B2WorldCreator
+- hud: Hud
+- actor: Actor
++ {static} trasition: boolean
+- st: ScreenTransition
+- img: Animation<TextureRegion>
+- vp: Viewport
+- fireBall: FireBall
+- delta: float
+- score: int
+- boolean isOut:
+- texture,loud,mute: Texture
+- speaker: int
+- OffsetBackground: int
+- items: Array<Item>
+- itemsToSpawn: LinkedBlockingQueue<ItemDefine>
+- previousPositionY, cnt, curr: float
+
++ int getScore()
++ PlayScreen(game: RunGame)
++ void setVolume()
++ void show()
++ void update(dt: float)
++ void handleInput(dt: float)
++ TiledMap getMap()
++ World getWorld()
++ void render(dt float)
++ boolean gameOver()
++ TextureAtlas getAtlas()
++ void resize(width: int, height: int)
++ void pause()
++ void resume()
++ void hide()
++ void dispose()
++ void spawnItem(itemDef: ItemDefine)
++ void handleSpawningItems()
+}
+class  Menu{
+- viewport: Viewport
+- vp; Viewport
+- stage: Stage
+- game: RunGame
+- skin: Skin
+- anima: Animation<TextureRegion>
+- img; Texture
+- dt: float
+
++ Menu(game: RunGame)
++ void show()
++ void render(v: float)
++ void resize(width: int, height: int)
++ void pause()
++ void resume()
++ void hide()
++ void dispose()
+}
+
+class GameOverScreen{
+- viewport: Viewport
+- stage: Stage
+- batch: SpriteBatch
+- game: Game
+- currentScore: int
+- {static} highScore: int
+- fontScore: BitmapFont
+
++ GameOverScreen(game: Game)
++ int loadHighScore()
++ void show()
++ void render(v: float)
++ void resize(i: int , i1: int )
++ void pause()
++ void resume()
++ void hide()
++ void dispose()
+}
+}
+@enduml

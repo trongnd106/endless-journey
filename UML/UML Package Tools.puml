@@ -1,0 +1,23 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+package Tools{
+class WorldContactListener implements ContactListener
+class B2WorldCreator {
+- deathcaps: Array<Deathcap>
+- {static} turtles: Array<Turtle>
+
++ B2WorldCreator(screen: PlayScreen)
++ Array<Deathcap> getDeathcaps()
++ {static} void removeTurtles( turtle: Turtle)
++ Array<Enemy> getEnemies()
+}
+
+class WorldContactListener{
++ void beginContact(contact: Contact)
++ void endContact(contact: Contact)
++ void preSolve(contact: Contact, manifold: Manifold)
++ void postSolve(contact: Contact, contactImpulse: ContactImpulse)
+}
+}
+@enduml

@@ -1,0 +1,27 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+package Scenes{
+class Hud implements Disposable
+class Hud{
++ stage: Stage
+- worldTimer: Integer
++ minutes: Integer
++ seconds: Integer
+- timeCount: float
+- {static} score: Integer
+- viewport: Viewport
+- cam: OrthographicCamera
++ countimelb: Label
++ {static} scorelb: Label
+- manlb: Label
+- timelb: Label
+
++ Hud(sb: SpriteBatch)
++ void updateScore(score: int)
++ void update(dt: float)
++ void addScore(value: int)
++ void dispose()
+}
+}
+@enduml

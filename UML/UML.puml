@@ -1,0 +1,360 @@
+@startuml
+'https://plantuml.com/sequence-diagE
+package game{
+class RunGame{
++ {static} WIDTH: float = 400
++ {static} HEIGHT: float = 240
++ {static} RSF: float = 100
++ {static} NOTHING_BIT: short =0
++ {static} GROUND_BIT: short =1
++ {static} ACTOR_BIT: short =2
++ {static} BRICK_BIT: short =4
++ {static} COIN_BIT: short =8
++ {static} ENEMY_BIT: short =16
++ {static} DESTROYED_BIT: short =64
++ {static} OBJECT_BIT: short =32
++ {static} ENEMY_HEAD_BIT: short =128
++ {static} ITEM_BIT: short =256
++ {static} ACTOR_HEAD_BIT: short =512
++ {static} PIPE_HEAD_BIT: short =1024
++ {static} manager: AssetManager
++ batch: SpriteBatch
+
++ void create ()
++ void render ()
++ void dispose ()
+}
+
+package Screens{
+class PlayScreen implements Screen
+class Menu implements Screen
+class GameOverScreen implements Screen
+class PlayScreen{
+- game: RunGame
+- gamePort: Viewport
+- gameCam: OrthographicCamera
+- loader: TmxMapLoader
+- map: TiledMap
+- atlas: TextureAtlas
+- renderer: OrthogonalTiledMapRenderer
+- music: Music
+- world: World
+- b2dr: Box2DDebugRenderer
+- b2wc: B2WorldCreator
+- hud: Hud
+- actor: Actor
++ {static} trasition: boolean
+- st: ScreenTransition
+- img: Animation<TextureRegion>
+- vp: Viewport
+- fireBall: FireBall
+- delta: float
+- score: int
+- boolean isOut:
+- texture,loud,mute: Texture
+- speaker: int
+- OffsetBackground: int
+- items: Array<Item>
+- itemsToSpawn: LinkedBlockingQueue<ItemDefine>
+- previousPositionY, cnt, curr: float
+
++ int getScore()
++ PlayScreen(game: RunGame)
++ void setVolume()
++ void show()
++ void update(dt: float)
++ void handleInput(dt: float)
++ TiledMap getMap()
++ World getWorld()
++ void render(dt float)
++ boolean gameOver()
++ TextureAtlas getAtlas()
++ void resize(width: int, height: int)
++ void pause()
++ void resume()
++ void hide()
++ void dispose()
++ void spawnItem(itemDef: ItemDefine)
++ void handleSpawningItems()
+}
+class  Menu{
+- viewport: Viewport
+- vp; Viewport
+- stage: Stage
+- game: RunGame
+- skin: Skin
+- anima: Animation<TextureRegion>
+- img; Texture
+- dt: float
+
++ Menu(game: RunGame)
++ void show()
++ void render(v: float)
++ void resize(width: int, height: int)
++ void pause()
++ void resume()
++ void hide()
++ void dispose()
+}
+
+class GameOverScreen{
+- viewport: Viewport
+- stage: Stage
+- batch: SpriteBatch
+- game: Game
+- currentScore: int
+- {static} highScore: int
+- fontScore: BitmapFont
+
++ GameOverScreen(game: Game)
++ int loadHighScore()
++ void show()
++ void render(v: float)
++ void resize(i: int , i1: int )
++ void pause()
++ void resume()
++ void hide()
++ void dispose()
+}
+}
+package Sprite{
+class Actor extends Sprite
+class Brick extends InteractiveObject
+class Coin extends InteractiveObject
+class pipe extends InteractiveObject
+class Actor{
++ State = {STANDING, JUMPING, RUNNING, FALLING, DEAD}
++ currState: State
++ prevState: State
+- aRun: Animation<TextureRegion>
+- aDead: TextureRegion
+- aJump: Animation<TextureRegion>
+- aStand: TextureRegion
+- getRight: boolean
+- timeofState: float
+- aIsDead: boolean
+- world: World
++ body: Body
+- chet: boolean
+
++ Actor(world: World, screen: PlayScreen )
++ void buildActor()
++ void update(deltatime: float)
++ TextureRegion getFrame(deltatime: float)
++ State getState()
++ void facing(region: TextureRegion)
++ void die()
++ boolean isDead()
++ float getTimeofState()
++ State getCurrState()
++ void died()
+}
+
+abstract class InteractiveObject{
+# world: World
+# map: TiledMap
+# tile: TiledMapTile
+# bounds: Rectangle
+# body: Body
+# fixture: Fixture
+# fdef: FixtureDef
+# screen: PlayScreen
+# object: MapObject
+
++ InteractiveObject(screen: PlayScreen, object: MapObject)
++ {abstract} void onHeadHit(actor: Actor)
++ void setCatergoryFilter(filterBit short)
++ TiledMapTileLayer.Cell getCell()
+}
+
+class Brick{
++ Brick(screen: PlayScreen, object: MapObject)
++ void onHeadHit(actor: Actor)
+}
+
+class Coin{
+- BLANK_COIN: int =28
+- {static} tileset: TiledMapTileSet
+
++ Coin(screen: PlayScreen, object: MapObject)
++ void onHeadHit(actor: Actor)
+}
+
+class pipe{
++ pipe(screen: PlayScreen, object: MapObject)
++ void onHeadHit(actor: Actor)
+}
+package Items{
+class Item extends Sprite
+class Mushroom extends Item
+abstract class Item{
+# screen: PlayScreen
+# world: World
+# velocity: Vector2
+# toDestroy: boolean
+# destroyed: boolean
+# body: Body
+
++ Item(screen: PlayScreen,x: float, y: float)
++ {abstract} void defineItem()
++ void update(dt: float)
++ {abstract} void use(actor: Actor)
++ void draw(batch: Batch)
++ void destroy()
++ void reverseVelocity(x: boolean ,y: boolean)
+}
+
+class ItemDefine{
++ position: Vector2
++ type: Class<?>
+
++ ItemDefine(position: Vector2, type: Class<?>)
+}
+
+class Mushroom{
++ Mushroom(screen: PlayScreen,x: float, y: float)
++ void defineItem()
++ void update(dt: float)
++ void use(actor: Actor)
++ void reverseVelocity(x: boolean ,y: boolean)
+}
+}
+}
+package Scenes{
+class Hud implements Disposable
+class Hud{
++ stage: Stage
+- worldTimer: Integer
++ minutes: Integer
++ seconds: Integer
+- timeCount: float
+- {static} score: Integer
+- viewport: Viewport
+- cam: OrthographicCamera
++ countimelb: Label
++ {static} scorelb: Label
+- manlb: Label
+- timelb: Label
+
++ Hud(sb: SpriteBatch)
++ void updateScore(score: int)
++ void update(dt: float)
++ void addScore(value: int)
++ void dispose()
+}
+}
+package enemies {
+class Deathcap extends Enemy
+class Turtle extends Enemy
+class Enemy extends Sprite
+class Fireball extends Sprite
+abstract class Enemy{
+# world: World
+# screen: PlayScreen
++ b2body: Body
++ velocity: Vector2
+
++ Enemy(screen: PlayScreen, x: float, y:float)
+#  void defineEnemy()
++ {abstract} void update(dt: float)
++ {abstract} void hitOnHead(actor: Actor)
++ {abstract} void onEnemyHit(enemy: Enemy)
++ void reverseVelocity(x: boolean, y:boolean)
+}
+
+class Deathcap{
++ State = {WALKING,SMASH}
++ currentState: State
++ previousState: State
+- stateTime: float
+- walkAnimation: Animation<TextureRegion>
+- smashAnimation: Animation<TextureRegion>
+- frames: Array<TextureRegion>
+- setToDestroy: boolean
+- destroyed: boolean
+
++ Deathcap(screen: PlayScreen, x:float, y: float)
+# void defineEnemy()
++ TextureRegion getFrame(dt: float)
++ void update(dt:float)
++ void draw(batch: Batch)
++ void hitOnHead(actor: Actor))
++ void onEnemyHit(enemy: Enemy)
+}
+
+class Turtle{
++ {static} KICK_LEFT_SPEED: int =-2
++ {static} KICK_RIGHT_SPEED: int =2
++ State = {WALKING,STANDING_SHELL,MOVING_SHELL,DEAD}
++ currentState: State
++ previousState:State
+- stateTime: float
+- walkAnimation: Animation<TextureRegion>
+- frames: Array<TextureRegion>
+- shell: TextureRegion
+- setToDestroy: boolean
+- deadRotationDegrees: float
+- destroyed: boolean
+
++ Turtle(screen: PlayScreen, x:float, y:float)
+# void defineEnemy()
++ void onEnemyHit(enemy: Enemy)
++ void setVelocity(a: Vector2)
++ TextureRegion getFrame(dt: float)
++ void update(dt: float)
++ void hitOnHead(actor Actor)
++ void kick(speed: int)
++ State getCurrentState()
++ void setCurrentState(currentState: State)
++ void draw(batch: Batch)
++ void killed()
+}
+
+class Fireball{
+- world: World
+- screen: PlayScreen
+- fire: Animation<TextureRegion>
++ b2body: Body
+- stateTime: float
+
++ FireBall(screen: PlayScreen, x: float, y: float)
++ void defineFireBall()
++ TextureRegion getFrame(dt: float)
++ void update(dt: float,x: float,y:float)
+}
+}
+package Tools{
+class WorldContactListener implements ContactListener
+class B2WorldCreator {
+- deathcaps: Array<Deathcap>
+- {static} turtles: Array<Turtle>
+
++ B2WorldCreator(screen: PlayScreen)
++ Array<Deathcap> getDeathcaps()
++ {static} void removeTurtles( turtle: Turtle)
++ Array<Enemy> getEnemies()
+}
+
+class WorldContactListener{
++ void beginContact(contact: Contact)
++ void endContact(contact: Contact)
++ void preSolve(contact: Contact, manifold: Manifold)
++ void postSolve(contact: Contact, contactImpulse: ContactImpulse)
+}
+}
+package Transition{
+class ScreenTransition {
+- alpha: float
++ {static} isTransitioning: boolean
+- game: RunGame
+- currentScreen, nextScreen: Screen
+
++ ScreenTransition()
++ ScreenTransition(current: Screen, next: Screen, game: RunGame)
++ void update(delta: float)
++ void render(dt: float)
+}
+}
+}
+
+@enduml
