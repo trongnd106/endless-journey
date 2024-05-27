@@ -1,0 +1,107 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+package Sprite{
+class Actor extends Sprite
+class Brick extends InteractiveObject
+class Coin extends InteractiveObject
+class pipe extends InteractiveObject
+class Actor{
++ State = {STANDING, JUMPING, RUNNING, FALLING, DEAD}
++ currState: State
++ prevState: State
+- aRun: Animation<TextureRegion>
+- aDead: TextureRegion
+- aJump: Animation<TextureRegion>
+- aStand: TextureRegion
+- getRight: boolean
+- timeofState: float
+- aIsDead: boolean
+- world: World
++ body: Body
+- chet: boolean
+
++ Actor(world: World, screen: PlayScreen )
++ void buildActor()
++ void update(deltatime: float)
++ TextureRegion getFrame(deltatime: float)
++ State getState()
++ void facing(region: TextureRegion)
++ void die()
++ boolean isDead()
++ float getTimeofState()
++ State getCurrState()
++ void died()
+}
+
+abstract class InteractiveObject{
+# world: World
+# map: TiledMap
+# tile: TiledMapTile
+# bounds: Rectangle
+# body: Body
+# fixture: Fixture
+# fdef: FixtureDef
+# screen: PlayScreen
+# object: MapObject
+
++ InteractiveObject(screen: PlayScreen, object: MapObject)
++ {abstract} void onHeadHit(actor: Actor)
++ void setCatergoryFilter(filterBit short)
++ TiledMapTileLayer.Cell getCell()
+}
+
+class Brick{
++ Brick(screen: PlayScreen, object: MapObject)
++ void onHeadHit(actor: Actor)
+}
+
+class Coin{
+- BLANK_COIN: int =28
+- {static} tileset: TiledMapTileSet
+
++ Coin(screen: PlayScreen, object: MapObject)
++ void onHeadHit(actor: Actor)
+}
+
+class pipe{
++ pipe(screen: PlayScreen, object: MapObject)
++ void onHeadHit(actor: Actor)
+}
+package Items{
+class Item extends Sprite
+class Mushroom extends Item
+abstract class Item{
+# screen: PlayScreen
+# world: World
+# velocity: Vector2
+# toDestroy: boolean
+# destroyed: boolean
+# body: Body
+
++ Item(screen: PlayScreen,x: float, y: float)
++ {abstract} void defineItem()
++ void update(dt: float)
++ {abstract} void use(actor: Actor)
++ void draw(batch: Batch)
++ void destroy()
++ void reverseVelocity(x: boolean ,y: boolean)
+}
+
+class ItemDefine{
++ position: Vector2
++ type: Class<?>
+
++ ItemDefine(position: Vector2, type: Class<?>)
+}
+
+class Mushroom{
++ Mushroom(screen: PlayScreen,x: float, y: float)
++ void defineItem()
++ void update(dt: float)
++ void use(actor: Actor)
++ void reverseVelocity(x: boolean ,y: boolean)
+}
+}
+}
+@enduml

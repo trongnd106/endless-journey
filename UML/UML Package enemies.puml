@@ -1,0 +1,87 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+package  enemies {
+class Deathcap extends Enemy
+class Turtle extends Enemy
+class Enemy extends Sprite
+class Fireball extends Sprite
+abstract class Enemy{
+# world: World
+# screen: PlayScreen
++ b2body: Body
++ velocity: Vector2
+
++ Enemy(screen: PlayScreen, x: float, y:float)
+#  void defineEnemy()
++ {abstract} void update(dt: float)
++ {abstract} void hitOnHead(actor: Actor)
++ {abstract} void onEnemyHit(enemy: Enemy)
++ void reverseVelocity(x: boolean, y:boolean)
+}
+
+class Deathcap{
++ State = {WALKING,SMASH}
++ currentState: State
++ previousState: State
+- stateTime: float
+- walkAnimation: Animation<TextureRegion>
+- smashAnimation: Animation<TextureRegion>
+- frames: Array<TextureRegion>
+- setToDestroy: boolean
+- destroyed: boolean
+
++ Deathcap(screen: PlayScreen, x:float, y: float)
+# void defineEnemy()
++ TextureRegion getFrame(dt: float)
++ void update(dt:float)
++ void draw(batch: Batch)
++ void hitOnHead(actor: Actor))
++ void onEnemyHit(enemy: Enemy)
+}
+
+class Turtle{
++ {static} KICK_LEFT_SPEED: int =-2
++ {static} KICK_RIGHT_SPEED: int =2
++ State = {WALKING,STANDING_SHELL,MOVING_SHELL,DEAD}
++ currentState: State
++ previousState:State
+- stateTime: float
+- walkAnimation: Animation<TextureRegion>
+- frames: Array<TextureRegion>
+- shell: TextureRegion
+- setToDestroy: boolean
+- deadRotationDegrees: float
+- destroyed: boolean
+
++ Turtle(screen: PlayScreen, x:float, y:float)
+# void defineEnemy()
++ void onEnemyHit(enemy: Enemy)
++ void setVelocity(a: Vector2)
++ TextureRegion getFrame(dt: float)
++ void update(dt: float)
++ void hitOnHead(actor Actor)
++ void kick(speed: int)
++ State getCurrentState()
++ void setCurrentState(currentState: State)
++ void draw(batch: Batch)
++ void killed()
+}
+
+class Fireball{
+- world: World
+- screen: PlayScreen
+- fire: Animation<TextureRegion>
++ b2body: Body
+- stateTime: float
+
++ FireBall(screen: PlayScreen, x: float, y: float)
++ void defineFireBall()
++ TextureRegion getFrame(dt: float)
++ void update(dt: float,x: float,y:float)
+}
+}
+
+
+
+@enduml

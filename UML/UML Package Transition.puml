@@ -1,0 +1,16 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+package Transition{
+class ScreenTransition {
+- alpha: float
++ {static} isTransitioning: boolean
+- game: RunGame
+- currentScreen, nextScreen: Screen
+
++ ScreenTransition()
++ ScreenTransition(current: Screen, next: Screen, game: RunGame)
++ void update(delta: float)
++ void render(dt: float)
+}
+}
+@enduml
