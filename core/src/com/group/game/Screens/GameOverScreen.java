@@ -40,7 +40,7 @@ public class GameOverScreen implements Screen {
         highScore = loadHighScore();
 
         // Tạo texture cho ảnh nền
-        Texture backgroundTexture = new Texture("abc.jpg");
+        Texture backgroundTexture = new Texture("over.jpg");
 
         // Tạo ảnh nền từ texture
         Image background = new Image(backgroundTexture);
