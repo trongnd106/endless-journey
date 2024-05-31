@@ -47,13 +47,11 @@ public class Mushroom extends Item {
 
     @Override
     public void use(Actor actor) {
-        // va chạm gọi destroy set destroyed=true sau đó update function chuẩn bị destroy
-        destroy();
+        destroy();//va cham goi destroy set destroyed=true then update function is gonna destroy
         setPosition(body.getPosition().x-getWidth()/2,body.getPosition().y-getHeight()/2);
         body.setLinearVelocity(velocity);
         Hud.addScore(100);
     }
-    
     public void reverseVelocity(boolean x,boolean y){
         if(x)velocity.x=-velocity.x;
         if(y)velocity.y=-velocity.y;;

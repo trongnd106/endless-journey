@@ -46,10 +46,10 @@ public class Hud implements Disposable {
         manlb = new Label("SCORE", new Label.LabelStyle(new BitmapFont(), Color.BROWN));
 
 
-        // Thêm nhãn vào bảng, padding top và dàn hàng ngang
+        //add our labels to our table, padding the top, and giving them all equal width with expandX
         table.add(manlb).expandX().padTop(10);
         table.add(timelb).expandX().padTop(10);
-        // Thêm từ dòng thứ 2 vào bảng
+        //add a second row to our table
         table.row();
         table.add(scorelb).expandX();
         table.add(countimelb).expandX();

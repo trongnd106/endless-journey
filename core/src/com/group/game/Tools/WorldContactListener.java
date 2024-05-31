@@ -15,8 +15,10 @@ public class WorldContactListener implements ContactListener {//duoc goi tu
         Fixture fixB= contact.getFixtureB();
         int cDef=fixA.getFilterData().categoryBits|fixB.getFilterData().categoryBits;
 
+
+
         switch(cDef){
-            // va chạm giữa actor với brick, coin
+            //va cham giua actor vs brick, coin
             case RunGame.ACTOR_HEAD_BIT|RunGame.BRICK_BIT:
             case RunGame.ACTOR_HEAD_BIT|RunGame.COIN_BIT:
                 if(fixA.getFilterData().categoryBits==RunGame.ACTOR_HEAD_BIT){
@@ -56,7 +58,7 @@ public class WorldContactListener implements ContactListener {//duoc goi tu
                 else  ((Actor)fixB.getUserData()).hit((Enemy)fixA.getUserData());
                 break;
 
-            //thêm của item và brick coin
+            //them cua item va brick coin
             case RunGame.ITEM_BIT|RunGame.ACTOR_BIT:
                 if(fixA.getFilterData().categoryBits==RunGame.ITEM_BIT){
                     ((Item)fixA.getUserData()).use((Actor) fixB.getUserData());
@@ -73,6 +75,16 @@ public class WorldContactListener implements ContactListener {//duoc goi tu
                     ((Item)fixB.getUserData()).reverseVelocity(true,false);
                 }
                 break;
+
+
+//                case RunGame.ACTOR_BIT|RunGame.PIPE_HEAD_BIT:
+//                    if(fixA.getFilterData().categoryBits==RunGame.ACTOR_BIT){;
+//                        ((pipe)fixB.getUserData()).onHeadHit((Actor)fixA.getUserData());
+//                    }
+//                    else {
+//                        ((pipe)fixA.getUserData()).onHeadHit((Actor)fixB.getUserData());
+//                    }
+//                    break;
         }
     }
     @Override

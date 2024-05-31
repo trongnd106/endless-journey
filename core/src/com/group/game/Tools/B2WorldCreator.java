@@ -27,7 +27,7 @@ public class B2WorldCreator {
         PolygonShape shape = new PolygonShape();
         FixtureDef fdef = new FixtureDef();
         Body body;
-        //Tạo ground
+//ground
         for (MapObject object : map.getLayers().get(2).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
 
@@ -40,20 +40,21 @@ public class B2WorldCreator {
             fdef.shape = shape;
             body.createFixture(fdef);
         }
-        //Tạo pipe
+//pipe
         for (MapObject object : map.getLayers().get(3).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
 
-           new pipe(screen,object);
+           new pipe(screen,object);//sua dau vao
         }
-        //Tạo coin bodies/fixtures
+        //create coin bodies/fixtures
         for (MapObject object : map.getLayers().get(4).getObjects().getByType(RectangleMapObject.class)) {
-            new Coin(screen, object);// sửa từ 3 đầu vào thành 2 đầu vào
+            new Coin(screen, object);// sua tu 3 dau vao thanh 2 dau vao
 
         }
-        //Tạo brick bodies/fixtures
+
+        //create brick bodies/fixtures
         for (MapObject object : map.getLayers().get(5).getObjects().getByType(RectangleMapObject.class)) {
-            new Brick(screen,object);// sửa từ 3 đầu vào thành 2 đầu vào
+            new Brick(screen,object);// sua tu 3 dau vao thanh 2 dau vao
         }
         deathcaps=new Array<Deathcap>();
         for(MapObject object:map.getLayers().get(6).getObjects().getByType(RectangleMapObject.class)){

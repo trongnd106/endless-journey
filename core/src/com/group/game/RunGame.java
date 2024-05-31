@@ -15,9 +15,9 @@ public class RunGame extends Game {
 	public static final float HEIGHT = 240;
 	public static final float RSF = 100;   // resize fit
 	public static  final short NOTHING_BIT=0;
-	public static final short GROUND_BIT =1;
-	public static final short ACTOR_BIT=2;
-	public static final short BRICK_BIT=4;
+	public static final short GROUND_BIT =1;//1
+	public static final short ACTOR_BIT=2;//10
+	public static final short BRICK_BIT=4;//100
 	public static final short COIN_BIT=8;
 
 	public static final short ENEMY_BIT =16;
@@ -28,7 +28,7 @@ public class RunGame extends Game {
 	public static final short ACTOR_HEAD_BIT=512;
 	public static final short PIPE_HEAD_BIT=1024;
 
-	public static AssetManager manager; 
+	public static AssetManager manager;   // for game music
 	public SpriteBatch batch;
 
 	@Override
@@ -37,6 +37,7 @@ public class RunGame extends Game {
 		// loading game music & sound for all
 		manager = new AssetManager();
 		manager.load("music/battleThemeA.mp3", Music.class);
+//		manager.load("sound/breakblock.wav", Sound.class);
 		manager.finishLoading();    // cho tất cả vào hàng đợi, chờ sử dụng - 'manager.get'
 
 		setScreen(new Menu(this));

@@ -53,7 +53,7 @@ public class Deathcap extends Enemy{
         CircleShape shape=new CircleShape();
         shape.setRadius(5/RunGame.RSF);
         fdef.shape=shape;
-        fdef.filter.categoryBits=RunGame.ENEMY_BIT;
+        fdef.filter.categoryBits=RunGame.ENEMY_BIT;//vat the
         fdef.filter.maskBits=RunGame.GROUND_BIT |RunGame.BRICK_BIT|RunGame.COIN_BIT|RunGame.ENEMY_BIT|RunGame.OBJECT_BIT|RunGame.ACTOR_BIT;//cac vat the co the va cham
 
         b2body.createFixture(fdef).setUserData(this);
@@ -68,8 +68,7 @@ public class Deathcap extends Enemy{
         head.set(vertice);
 
         fdef.shape=head;
-        // elasticity
-        fdef.restitution=1.5f;
+        fdef.restitution=1.5f;//do dan hoi
         fdef.filter.categoryBits=RunGame.ENEMY_HEAD_BIT;
         b2body.createFixture(fdef).setUserData(this);
 
@@ -117,9 +116,9 @@ public class Deathcap extends Enemy{
         else if(stateTime<1)super.draw(batch);
     }
     @Override
-    public void hitOnHead(Actor actor) {
+    public void hitOnHead(Actor mario) {
         setToDestroy=true;
-        // add scrore
+        // them tinh diem
         Hud.addScore(100);
     }
 

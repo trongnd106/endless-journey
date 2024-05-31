@@ -39,7 +39,7 @@ public class FireBall extends Sprite {
         CircleShape shape=new CircleShape();
         shape.setRadius(5/ RunGame.RSF);
         fdef.shape=shape;
-        fdef.filter.categoryBits=RunGame.ENEMY_BIT;
+        fdef.filter.categoryBits=RunGame.ENEMY_BIT;//vat the
         fdef.filter.maskBits=RunGame.GROUND_BIT |RunGame.BRICK_BIT|RunGame.COIN_BIT|RunGame.ENEMY_BIT|RunGame.OBJECT_BIT|RunGame.ACTOR_BIT;//cac vat the co the va cham
 
         b2body.createFixture(fdef).setUserData(this);

@@ -48,12 +48,12 @@ public class Turtle extends Enemy{
         CircleShape shape=new CircleShape();
         shape.setRadius(5/ RunGame.RSF);
         fdef.shape=shape;
-        fdef.filter.categoryBits= RunGame.ENEMY_BIT; // Vật thể
+        fdef.filter.categoryBits= RunGame.ENEMY_BIT;//vat the
         fdef.filter.maskBits= RunGame.GROUND_BIT | RunGame.BRICK_BIT| RunGame.COIN_BIT| RunGame.ENEMY_BIT| RunGame.OBJECT_BIT| RunGame.ACTOR_BIT;//cac vat the co the va cham
 
         b2body.createFixture(fdef).setUserData(this);
 
-        // Tạo cảm biến trên đầu của enemy
+        //create the head dof w=enemy
         PolygonShape head =new PolygonShape();
         Vector2[] vertice=new Vector2[4];
         vertice[0]=new Vector2(-4,8).scl(1/ RunGame.RSF);
@@ -63,8 +63,7 @@ public class Turtle extends Enemy{
         head.set(vertice);
 
         fdef.shape=head;
-        // Độ đàn hồi
-        fdef.restitution=1.5f;
+        fdef.restitution=1.5f;//do dan hoi
         fdef.filter.categoryBits= RunGame.ENEMY_HEAD_BIT;
         b2body.createFixture(fdef).setUserData(this);
 
@@ -115,9 +114,7 @@ public void setVelocity(Vector2 a){
         if(velocity.x<0&& region.isFlipX()==true){
             region.flip(true,false);
         }
-        // Nếu trạng thái trước đó trùng với trạng thái hiện tại thì tăng stateTimer để
-        // hàm getKeyFrame lấy ảnh tiếp. không thì trả về 0
-        stateTime=currentState==previousState?stateTime+dt:0;
+        stateTime=currentState==previousState?stateTime+dt:0;//neu trang thai truoc do trung voi trsng thai hien tai thi tang stateTimer de ham getKeyFrame lay anh tiep ko thi return ve 0
         previousState=currentState;
         return region;
     }
@@ -132,9 +129,8 @@ public void setVelocity(Vector2 a){
         setPosition(b2body.getPosition().x-getWidth()/2,b2body.getPosition().y-getHeight()/2);
         if(currentState==State.DEAD){
             deadRotationDegrees+=3;
-            // phương thức của interface sprite
-            rotate(deadRotationDegrees);
-            if(stateTime>5&&destroyed==false){
+            rotate(deadRotationDegrees);//method of interface sprite
+            if(stateTime>5&&destroyed==false){//
                 world.destroyBody(b2body);
                 destroyed=true;
                 B2WorldCreator.removeTurtles(this);
@@ -146,17 +142,16 @@ public void setVelocity(Vector2 a){
     }
 
     @Override
-    public void hitOnHead(Actor actor) {
+    public void hitOnHead(Actor mario) {
         if(currentState!=State.STANDING_SHELL){
             currentState=State.STANDING_SHELL;
             velocity.x=0;
-            // add score 
+            // them tinh diem
             Hud.addScore(100);
         }
-        else kick(actor.getX()<=this.getX()?KICK_RIGHT_SPEED:KICK_LEFT_SPEED);
+        else kick(mario.getX()<=this.getX()?KICK_RIGHT_SPEED:KICK_LEFT_SPEED);
     }
-    // Được gọi khi có va chạm với đầu hoặc thân
-    public void kick(int speed){
+    public void kick(int speed){//goi khi va cham voi thang dau hoac thang than
         velocity.x=speed;
         currentState=State.MOVING_SHELL;
     }
