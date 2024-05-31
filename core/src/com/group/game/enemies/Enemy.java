@@ -20,8 +20,8 @@ public abstract class Enemy extends Sprite {
         setPosition(x,y);
         defineEnemy();
         velocity=new Vector2(0.7f,-1);
-
-        b2body.setActive(false);//sleep phan than
+        // sleep body
+        b2body.setActive(false);
     }
     protected abstract void defineEnemy();
     public abstract void update(float dt);

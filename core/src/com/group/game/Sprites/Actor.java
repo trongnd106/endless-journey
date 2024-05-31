@@ -24,11 +24,12 @@ public class Actor extends Sprite {
     private boolean getRight;
     private float timeofState;
     private boolean aIsDead;
-
     private World world;
     public Body body;
     private boolean chet;
-    //private TextureRegion stand;
+
+    private float maxHeight;
+
     public Actor(World world, PlayScreen screen){
         super(screen.getAtlas().findRegion("fox-each"));
         this.world = world;
@@ -36,23 +37,21 @@ public class Actor extends Sprite {
         prevState = State.STANDING;
         timeofState = 0;
         getRight = true;
+        maxHeight = 200;  // Giá trị độ cao tối đa
 
         Array<TextureRegion> ani = new Array<TextureRegion>();
         for(int i = 0; i < 4; i++){
             ani.add(new TextureRegion(screen.getAtlas().findRegion("fox-each"),32*i,8,32,36));
-            //ani.add(new TextureRegion(getTexture(), i*16, 10, 16,16));
         }
         aRun = new Animation<TextureRegion>(0.1f, ani);
         ani.clear();
 
         for(int i = 0; i < 4; i++){
             ani.add(new TextureRegion(screen.getAtlas().findRegion("fox-each"),32*i,8,32,36));
-            //ani.add(new TextureRegion(getTexture(), i*16, 10, 16,16));
         }
         aJump = new Animation<TextureRegion>(0.1f, ani);
 
         aStand = new TextureRegion(screen.getAtlas().findRegion("fox-each"),0,8,32,36);
-        //aStand = new TextureRegion(getTexture(),0,10,16,16);
         aDead = new TextureRegion(screen.getAtlas().findRegion("fox-each"), 16, 0, 32, 36);
         buildActor();
 
@@ -60,6 +59,7 @@ public class Actor extends Sprite {
         setRegion(aStand);
         aIsDead=false;
     }
+
     private void buildActor(){
         BodyDef bdf = new BodyDef();
         bdf.position.set(32/RunGame.RSF,32/RunGame.RSF);
@@ -70,7 +70,8 @@ public class Actor extends Sprite {
         CircleShape shape = new CircleShape();
         shape.setRadius(6/RunGame.RSF);
         fdf.shape = shape;
-        fdf.filter.categoryBits=RunGame.ACTOR_BIT;//vat the
+        // Vật thể
+        fdf.filter.categoryBits=RunGame.ACTOR_BIT;
         fdf.filter.maskBits=RunGame.GROUND_BIT |RunGame.BRICK_BIT|RunGame.COIN_BIT
                 |RunGame.OBJECT_BIT|RunGame.ENEMY_BIT|RunGame.ENEMY_HEAD_BIT|RunGame.ITEM_BIT|RunGame.PIPE_HEAD_BIT;//cac vat the co the va cham
 
@@ -81,20 +82,25 @@ public class Actor extends Sprite {
         head.set(new Vector2(-2/RunGame.RSF, 6/RunGame.RSF), new Vector2(2/RunGame.RSF, 6/RunGame.RSF));
         fdf.filter.categoryBits=RunGame.ACTOR_HEAD_BIT;
         fdf.shape = head;
-        // is sensor ? no longer collide with anything
+        // Có cảm biến ? Va chạm
         fdf.isSensor = true;
         body.createFixture(fdf).setUserData(this);
     }
 
     public void update(float deltatime){
+        if(getY() < 0)
+            die();
 
-       // System.out.println(getX()+" "+getY());
-        if(getY()<0)die();
-
+        // Kiểm tra và giới hạn độ cao của nhân vật
+        if(body.getPosition().y > maxHeight / RunGame.RSF) {
+            body.setLinearVelocity(body.getLinearVelocity().x, 0); // Dừng chuyển động lên
+            body.setTransform(body.getPosition().x, maxHeight / RunGame.RSF, body.getAngle()); // Đưa về độ cao tối đa
+        }
 
         setPosition(body.getPosition().x - getWidth()/2, body.getPosition().y - getHeight()/2);
         setRegion(getFrame(deltatime));
     }
+
     public TextureRegion getFrame(float deltatime){
         currState = getState();
         TextureRegion t_region;
@@ -118,7 +124,7 @@ public class Actor extends Sprite {
                 break;
         }
 
-        // actor run left/right - facing?
+        // Hướng nhìn của nhân vật chính khi chạy về bên trái/phải
         facing(t_region);
         if(currState == prevState)
             timeofState += deltatime;
@@ -128,6 +134,7 @@ public class Actor extends Sprite {
 
         return t_region;
     }
+
     public State getState(){
         if(aIsDead)
             return State.DEAD;
@@ -139,6 +146,7 @@ public class Actor extends Sprite {
             return State.FALLING;
         else return State.STANDING;
     }
+
     public void facing(TextureRegion region){
         if((body.getLinearVelocity().x < 0 || !getRight) && !region.isFlipX()){
             region.flip(true, false);
@@ -152,8 +160,6 @@ public class Actor extends Sprite {
     public void die() {
 
         if (!isDead()) {
-            //RunGame.manager.get("audio/music/music.ogg", Music.class).stop();
-            //RunGame.manager.get("audio/sounds/die.wav", Sound.class).play();
             aIsDead = true;
             Filter filter = new Filter();
             filter.maskBits = RunGame.NOTHING_BIT;
@@ -165,6 +171,7 @@ public class Actor extends Sprite {
             body.applyLinearImpulse(new Vector2(0, 4f), body.getWorldCenter(), true);
         }
     }
+
     public boolean isDead(){
         return aIsDead;
     }
@@ -172,6 +179,7 @@ public class Actor extends Sprite {
     public float getTimeofState(){
         return timeofState;
     }
+
     public void hit(Enemy enemy){
         if(enemy instanceof Turtle && ((Turtle) enemy).getCurrentState()==Turtle.State.STANDING_SHELL){
             ((Turtle)enemy).kick(this.getX()<enemy.getX()?Turtle.KICK_RIGHT_SPEED:Turtle.KICK_LEFT_SPEED);
@@ -184,6 +192,7 @@ public class Actor extends Sprite {
     public State getCurrState() {
         return currState;
     }
+
     public void died(){
         chet=true;
         Filter filter = new Filter();

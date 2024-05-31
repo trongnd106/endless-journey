@@ -39,10 +39,10 @@ public class GameOverScreen implements Screen {
         currentScore = ((PlayScreen) game.getScreen()).getScore();
         highScore = loadHighScore();
 
-        // Tạo texture cho ảnh nền
+        // Tạo texture từ ảnh nền
         Texture backgroundTexture = new Texture("over.jpg");
 
-        // Tạo ảnh nền từ texture
+        // Tạo ảnh nền từ texture 
         Image background = new Image(backgroundTexture);
         background.setFillParent(true);
 
@@ -99,16 +99,9 @@ public class GameOverScreen implements Screen {
             game.setScreen(new PlayScreen((RunGame) game));
             dispose();
         }
-
         Gdx.gl.glClearColor( 0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.draw();
-
-        //Cập nhật kỉ lục
-//        batch.begin();
-//        fontScore.draw(batch, "Score: " + currentScore, 10, RunGame.HEIGHT - 10);
-//        fontScore.draw(batch, "High Score: " + highScore, RunGame.WIDTH - 150, RunGame.HEIGHT - 10);
-//        batch.end();
     }
 
     @Override

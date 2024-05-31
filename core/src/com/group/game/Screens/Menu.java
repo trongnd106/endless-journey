@@ -53,12 +53,11 @@ public class Menu implements Screen {
         TextButton settingsButton = new TextButton("Introduce", skin,"small");
         TextButton exitButton = new TextButton("Exit", skin,"small");
 
-        // Add listeners to buttons
+        // Thêm listener cho nút
         playButton.addListener(event -> {
             if (event.toString().equals("touchDown")) {
-                // Switch to play screen
+                // Thoát khỏi màn hình chơi
                 game.setScreen(new PlayScreen(game));
-                // transition to the game screen, for example
             }
             return true;
         });
@@ -74,7 +73,7 @@ public class Menu implements Screen {
 
         exitButton.addListener(event -> {
             if (event.toString().equals("touchDown")) {
-                // Exit the application
+                // Exit 
                 Gdx.app.exit();
             }
             return true;
@@ -82,7 +81,7 @@ public class Menu implements Screen {
 
         table.add(gameTitle);
         table.row().pad(10, 0, 10, 0);;
-        // Add buttons to table
+        // Thêm nút vào table
         table.add(playButton).uniformX();
         table.row().pad(10, 0, 10, 0);
         table.add(settingsButton).uniformX();
@@ -110,7 +109,6 @@ public class Menu implements Screen {
         game.batch.setProjectionMatrix(vp.getCamera().combined);
 
         game.batch.begin();
-        //game.batch.draw(img, 0, 0, vp.getWorldWidth(), vp.getWorldHeight());
         game.batch.draw(img, 0, 0f,vp.getWorldWidth(), vp.getWorldHeight());
         game.batch.end();
 

@@ -11,19 +11,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Array;
 
     public class GifDecoder {
-        /**
-         * File read status: No errors.
-         */
         public static final int STATUS_OK = 0;
-        /**
-         * File read status: Error decoding file (may be partially decoded)
-         */
         public static final int STATUS_FORMAT_ERROR = 1;
-        /**
-         * File read status: Unable to open source.
-         */
         public static final int STATUS_OPEN_ERROR = 2;
-        /** max decoder pixel stack size */
         protected static final int MAX_STACK_SIZE = 4096;
         protected InputStream in;
         protected int status;
@@ -76,7 +66,6 @@ import com.badlogic.gdx.utils.Array;
                         int pxl_ARGB8888 = data[x + y * w];
                         int pxl_RGBA8888 =
                                 ((pxl_ARGB8888 >> 24) & 0x000000ff) | ((pxl_ARGB8888 << 8) & 0xffffff00);
-                        // convert ARGB8888 > RGBA8888
                         drawPixel(x, y, pxl_RGBA8888);
                     }
                 }
@@ -91,8 +80,6 @@ import com.badlogic.gdx.utils.Array;
                     int _offset = offset;
                     for(l = x; l < x + width; l++) {
                         int pxl = bb.getInt(4 * (l + k * width));
-
-                        // convert RGBA8888 > ARGB8888
                         pixels[_offset++] = ((pxl >> 8) & 0x00ffffff) | ((pxl << 24) & 0xff000000);
                     }
                     offset += stride;
@@ -237,7 +224,6 @@ import com.badlogic.gdx.utils.Array;
                 }
             }
             image = new DixieMap(dest, width, height, Pixmap.Format.RGBA8888);
-            //Pixmap.createPixmap(dest, width, height, Config.ARGB_4444);
         }
 
         /**
@@ -280,9 +266,6 @@ import com.badlogic.gdx.utils.Array;
             return status;
         }
 
-        /**
-         * Decodes LZW image data into pixel array. Adapted from John Cristy's BitmapMagick.
-         */
         protected void decodeBitmapData() {
             int nullCode = -1;
             int npix = iw * ih;
@@ -387,16 +370,10 @@ import com.badlogic.gdx.utils.Array;
             }
         }
 
-        /**
-         * Returns true if an error was encountered during reading/decoding
-         */
         protected boolean err() {
             return status != STATUS_OK;
         }
 
-        /**
-         * Initializes or re-initializes reader
-         */
         protected void init() {
             status = STATUS_OK;
             frameCount = 0;
@@ -405,9 +382,6 @@ import com.badlogic.gdx.utils.Array;
             lct = null;
         }
 
-        /**
-         * Reads a single byte from the input stream.
-         */
         protected int read() {
             int curByte = 0;
             try {
@@ -479,9 +453,6 @@ import com.badlogic.gdx.utils.Array;
             return tab;
         }
 
-        /**
-         * Main file parser. Reads GIF content blocks.
-         */
         protected void readContents() {
             // read GIF file content blocks
             boolean done = false;
@@ -529,9 +500,6 @@ import com.badlogic.gdx.utils.Array;
             }
         }
 
-        /**
-         * Reads Graphics Control Extension values
-         */
         protected void readGraphicControlExt() {
             read(); // block size
             int packed = read(); // packed fields
@@ -545,9 +513,6 @@ import com.badlogic.gdx.utils.Array;
             read(); // block terminator
         }
 
-        /**
-         * Reads GIF file header information.
-         */
         protected void readHeader() {
             String id = "";
             for (int i = 0; i < 6; i++) {
@@ -564,9 +529,6 @@ import com.badlogic.gdx.utils.Array;
             }
         }
 
-        /**
-         * Reads next frame image
-         */
         protected void readBitmap() {
             ix = readShort(); // (sub)image position & size
             iy = readShort();
@@ -616,9 +578,6 @@ import com.badlogic.gdx.utils.Array;
             resetFrame();
         }
 
-        /**
-         * Reads Logical Screen Descriptor
-         */
         protected void readLSD() {
             // logical screen size
             width = readShort();
@@ -633,9 +592,6 @@ import com.badlogic.gdx.utils.Array;
             pixelAspect = read(); // pixel aspect ratio
         }
 
-        /**
-         * Reads Netscape extenstion to obtain iteration count
-         */
         protected void readNetscapeExt() {
             do {
                 readBlock();
@@ -648,17 +604,11 @@ import com.badlogic.gdx.utils.Array;
             } while ((blockSize > 0) && !err());
         }
 
-        /**
-         * Reads next 16-bit value, LSB first
-         */
         protected int readShort() {
             // read 16-bit value, LSB first
             return read() | (read() << 8);
         }
 
-        /**
-         * Resets frame state for reading next image.
-         */
         protected void resetFrame() {
             lastDispose = dispose;
             lrx = ix;
@@ -673,9 +623,6 @@ import com.badlogic.gdx.utils.Array;
             lct = null;
         }
 
-        /**
-         * Skips variable length blocks up to and including next zero length block.
-         */
         protected void skip() {
             do {
                 readBlock();
