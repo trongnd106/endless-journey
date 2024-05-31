@@ -13,7 +13,8 @@ public abstract class Item extends Sprite {
     protected PlayScreen screen;
     protected World world;
     protected Vector2 velocity;
-    protected boolean toDestroy;//use to destroy an intem
+    // sử dụng để phá vỡ vật phẩm
+    protected boolean toDestroy;
     protected boolean destroyed;
     protected Body body;
     public Item(PlayScreen screen,float x,float y){
@@ -29,7 +30,8 @@ public abstract class Item extends Sprite {
 
     public void update(float dt){
         if(toDestroy && !destroyed){
-            world.destroyBody(body);//huy item tren screen
+            // hủy item trên screen
+            world.destroyBody(body);
             destroyed=true;
         }
     }

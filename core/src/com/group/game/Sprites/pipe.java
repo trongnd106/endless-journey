@@ -14,7 +14,8 @@ import com.group.game.enemies.FireBall;
 
 public class pipe extends InteractiveObject {
     public pipe(PlayScreen screen, MapObject object) {
-        super(screen,object);// sua dau vao
+        // Fix đầu vào
+        super(screen,object);
         this.object=object;
         fixture.setUserData(this);
         setCatergoryFilter(RunGame.OBJECT_BIT);

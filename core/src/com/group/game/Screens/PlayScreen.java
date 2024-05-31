@@ -67,14 +67,11 @@ public class PlayScreen implements Screen {
     private int speaker;
     private int OffsetBackground;
 
-
-    // them bien Item
+    // thêm biến Item
     private Array<Item> items;
     private LinkedBlockingQueue<ItemDefine> itemsToSpawn;
 
     private float previousPositionY ,cnt,curr;
-
-
 
     public PlayScreen(RunGame game){
         this.game = game;
@@ -92,7 +89,7 @@ public class PlayScreen implements Screen {
         gameCam.position.set(game.WIDTH/2/game.RSF, game.HEIGHT/2/game.RSF, 0);
 
         world = new World(new Vector2(0, -10), true);
-        // tao actor sau khi co world -> tranh dao thu tu code gay loi
+        // Tạo actor sau khi có world, tránh đảo thứ tự code gây lỗi
         actor = new Actor(world, this);
         b2dr = new Box2DDebugRenderer();
 
@@ -100,28 +97,22 @@ public class PlayScreen implements Screen {
 
         world.setContactListener(new WorldContactListener());
 
-        // get music
+        // Chèn âm thanh 
         speaker=1;
         music = RunGame.manager.get("music/battleThemeA.mp3", Music.class);
         music.setLooping(true);
-
-            music.play();
-
+        music.play();
 
         trasition=false;
-        // st=new ScreenTransition()
-       // img=GifDecoder.loadGIFAnimation(Animation.PlayMode.LOOP, Gdx.files.internal("you.gif").read());
         vp = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         delta=0;
-
 
         texture=new Texture("forest-game-background-free-vector.jpg");
         loud=new Texture("Ảnh chụp màn hình 2024-05-26 211237.png");
         mute=new Texture("Ảnh chụp màn hình 2024-05-26 214333.png");
 
-
         OffsetBackground=0;
-        // tao mang item va hang doi itemtosqawm
+        // Tạo mảng item và hàng đợi itemtosqawm
         items=new Array<Item>();
         itemsToSpawn= new LinkedBlockingQueue<ItemDefine>();
     }
@@ -143,43 +134,32 @@ public class PlayScreen implements Screen {
     }
     public void update(float dt){
         handleInput(dt);
-
         //sqawningitem
         handleSpawningItems();
-
         world.step(1 / 60f, 6, 2);
         actor.update(dt);
         hud.update(dt);
-
         if (actor.body.getPosition().y < -10) {
             isOut = true;
         }
         // Cập nhật điểm số
         score = (int) (actor.body.getPosition().x * 10);
-
         gameCam.position.x = actor.body.getPosition().x;
-
         for(Enemy enemy: b2wc.getEnemies()){
             enemy.update(dt);
             if (enemy.getX() < actor.getX() + 14 * 16 / RunGame.RSF) {
                 enemy.b2body.setActive(true);//wake up
             }
         }
-
-
-        //attach our gamecam to our players.x coordinate
+        // attach our gamecam to our players.x coordinate
         if(actor.currState != Actor.State.DEAD) {
             gameCam.position.x = actor.body.getPosition().x;
         }
-
-
         // update item
         for(Item item:items){
             item.update(dt);
         }
-
         gameCam.update();
-
         renderer.setView(gameCam);
         setVolume();
         delta+=dt;
@@ -187,20 +167,16 @@ public class PlayScreen implements Screen {
 
     // xử lí sự kiện đầu vào click,press
     public void handleInput(float dt){
-
         if(actor.currState != Actor.State.DEAD){
             if(Gdx.input.isKeyJustPressed(Input.Keys.UP))
-                actor.body.applyLinearImpulse(new Vector2(0,3f), actor.body.getWorldCenter(), true);
+                actor.body.applyLinearImpulse(new Vector2(0,1.5f), actor.body.getWorldCenter(), true);
 
             if(Gdx.input.isKeyPressed(Input.Keys.RIGHT) && actor.body.getLinearVelocity().x <= 2)
                 actor.body.applyLinearImpulse(new Vector2(0.1f, 0), actor.body.getWorldCenter(), true);
 
-        if(Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
-
-             actor.body.applyLinearImpulse(new Vector2(0, 3f), actor.body.getWorldCenter(), true);
-        }
-
-
+            if(Gdx.input.isKeyJustPressed(Input.Keys.UP)) 
+                actor.body.applyLinearImpulse(new Vector2(0, 1.5f), actor.body.getWorldCenter(), true);
+            
             if(Gdx.input.isKeyPressed(Input.Keys.LEFT) && actor.body.getLinearVelocity().x >= -2)
                 actor.body.applyLinearImpulse(new Vector2(-0.1f, 0), actor.body.getWorldCenter(), true);
         }
