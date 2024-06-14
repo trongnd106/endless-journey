@@ -1,7 +1,7 @@
 @startuml
 'https://plantuml.com/sequence-diagram
 
-package Tools{
+package tools{
 class WorldContactListener implements ContactListener
 class B2WorldCreator {
 - deathcaps: Array<Deathcap>

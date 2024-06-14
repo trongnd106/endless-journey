@@ -1,7 +1,7 @@
 @startuml
 'https://plantuml.com/sequence-diagram
 
-package Sprite{
+package sprite{
 class Actor extends Sprite
 class Brick extends InteractiveObject
 class Coin extends InteractiveObject
@@ -68,7 +68,7 @@ class pipe{
 + pipe(screen: PlayScreen, object: MapObject)
 + void onHeadHit(actor: Actor)
 }
-package Items{
+package items{
 class Item extends Sprite
 class Mushroom extends Item
 abstract class Item{
