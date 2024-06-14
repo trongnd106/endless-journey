@@ -1,6 +1,6 @@
 @startuml
 'https://plantuml.com/sequence-diagram
-package Transition{
+package transition{
 class ScreenTransition {
 - alpha: float
 + {static} isTransitioning: boolean

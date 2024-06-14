@@ -25,7 +25,7 @@ class RunGame{
 + void dispose ()
 }
 
-package Screens{
+package screens{
 class PlayScreen implements Screen
 class Menu implements Screen
 class GameOverScreen implements Screen
@@ -117,7 +117,7 @@ class GameOverScreen{
 + void dispose()
 }
 }
-package Sprite{
+package sprite{
 class Actor extends Sprite
 class Brick extends InteractiveObject
 class Coin extends InteractiveObject
@@ -184,7 +184,7 @@ class pipe{
 + pipe(screen: PlayScreen, object: MapObject)
 + void onHeadHit(actor: Actor)
 }
-package Items{
+package items{
 class Item extends Sprite
 class Mushroom extends Item
 abstract class Item{
@@ -220,7 +220,7 @@ class Mushroom{
 }
 }
 }
-package Scenes{
+package scenes{
 class Hud implements Disposable
 class Hud{
 + stage: Stage
@@ -323,7 +323,7 @@ class Fireball{
 + void update(dt: float,x: float,y:float)
 }
 }
-package Tools{
+package tools{
 class WorldContactListener implements ContactListener
 class B2WorldCreator {
 - deathcaps: Array<Deathcap>
@@ -342,7 +342,7 @@ class WorldContactListener{
 + void postSolve(contact: Contact, contactImpulse: ContactImpulse)
 }
 }
-package Transition{
+package transition{
 class ScreenTransition {
 - alpha: float
 + {static} isTransitioning: boolean
